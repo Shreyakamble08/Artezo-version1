@@ -1519,8 +1519,7 @@
     if (!root) return;
 
     // ========== REFACTORED: SEPARATE SIZE & COLOR SECTIONS WITH DYNAMIC FILTERING ==========
-    // ==================== CLEAN DYNAMIC VARIANT SECTION ====================
-
+  
     // Extract unique sizes
     const sizeSet = new Set();
     transformedData.colors.forEach((c) => {
@@ -1567,7 +1566,7 @@
             <span id="sizeHint" class="text-xs text-gray-500 font-medium"></span>
           </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4" id="colorSwatches">
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 p-2 gap-4" id="colorSwatches">
             ${transformedData.colors
               .map(
                 (c) => `
