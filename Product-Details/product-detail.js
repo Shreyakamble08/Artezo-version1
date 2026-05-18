@@ -1242,7 +1242,7 @@
     updateWishlistButtonState(wishlistBtn, inWishlist);
   }
 
-  // ==================== SETUP FUNCTIONS ====================
+  // ==================== SETUP FUNCTIONS - #patch-2 ====================
   function setupDynamicVariants() {
     const sizeButtons = document.querySelectorAll(".size-btn");
     const sizeHint = document.getElementById("sizeHint");
@@ -1518,7 +1518,7 @@
     const root = document.getElementById("dynamicRoot");
     if (!root) return;
 
-    // ========== REFACTORED: SEPARATE SIZE & COLOR SECTIONS WITH DYNAMIC FILTERING ==========
+    // ========== REFACTORED: SEPARATE SIZE & COLOR SECTIONS WITH DYNAMIC FILTERING #patch-1 ==========
   
     // Extract unique sizes
     const sizeSet = new Set();
@@ -2333,7 +2333,7 @@ bg-gray-100 px-2 py-0.5 rounded-md">
       setupEventListeners();
 
       setTimeout(() => {
-        setupDynamicVariants();
+        setupDynamicVariants(); //#patch 3 - Setup variant selection logic after HTML is rendered
         document
           .querySelectorAll(".add-to-cart-btn")
           .forEach((btn) => btn.addEventListener("click", handleAddToCart));
