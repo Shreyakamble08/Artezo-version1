@@ -238,16 +238,17 @@
     />
   </div>
 
-  ${banner.imgDescription
-            ? `
+  ${
+    banner.imgDescription
+      ? `
       <div class="banner-desc">
         <p class="banner-text">
           ${banner.imgDescription}
         </p>
       </div>
       `
-            : ""
-          }
+      : ""
+  }
 
 </div>
       `;
@@ -286,10 +287,11 @@
           </h1>
 
           <p class="text-gray-600 font-lexend text-base md:text-lg leading-relaxed max-w-xl mx-auto">
-            ${safeProductData.aboutItem?.[0] ||
-        safeProductData.description?.[0] ||
-        "Discover thoughtfully curated decor pieces that bring warmth and elegance into your space."
-        }
+            ${
+              safeProductData.aboutItem?.[0] ||
+              safeProductData.description?.[0] ||
+              "Discover thoughtfully curated decor pieces that bring warmth and elegance into your space."
+            }
           </p>
 
         </div>
@@ -361,22 +363,24 @@
               <span class="text-3xl font-bold font-lexend text-[#1D3C4A]">
                 ₹${safeProductData.currentSellingPrice || 0}
               </span>
-              ${safeProductData.currentMrpPrice &&
-        safeProductData.currentMrpPrice >
-        (safeProductData.currentSellingPrice || 0)
-        ? `
+              ${
+                safeProductData.currentMrpPrice &&
+                safeProductData.currentMrpPrice >
+                  (safeProductData.currentSellingPrice || 0)
+                  ? `
               <span class="text-2xl text-gray-400 font-lexend line-through">
                 ₹${safeProductData.currentMrpPrice}
               </span>`
-        : ""
-      }
-              ${getDiscountPercent()
-        ? `
+                  : ""
+              }
+              ${
+                getDiscountPercent()
+                  ? `
               <span class="bg-[#e39f32] text-white font-bold px-4 py-1.5 rounded-2xl text-sm shadow-sm tracking-wide">
                 ${getDiscountPercent()}% OFF
               </span>`
-        : ""
-      }
+                  : ""
+              }
             </div>
           </div>
 
@@ -1239,42 +1243,70 @@
   }
 
   // ==================== SETUP FUNCTIONS ====================
+  function setupDynamicVariants() {
+    const sizeButtons = document.querySelectorAll(".size-btn");
+    const sizeHint = document.getElementById("sizeHint");
 
-  function setupVariantSelection() {
-    const variantCards = document.querySelectorAll("[data-variant-id]");
-    if (variantCards.length === 0) return;
+    function filterColorsBySize(selectedSize) {
+      const colorButtons = document.querySelectorAll(".color-variant");
+      let count = 0;
+      let firstVisible = null;
 
-    variantCards.forEach((card) => {
-      card.addEventListener("click", function (e) {
-        e.stopPropagation();
-        variantCards.forEach((c) => {
-          c.classList.remove(
-            "selected",
-            "ring-2",
-            "ring-offset-2",
-            "ring-[#E6A62C]",
-          );
-          c.classList.add("ring-1", "ring-gray-200");
-        });
-        this.classList.add(
-          "selected",
-          "ring-2",
-          "ring-offset-2",
-          "ring-[#E6A62C]",
-        );
-        this.classList.remove("ring-1", "ring-gray-200");
-
-        const variantId = this.dataset.variantId;
-        const newVariant = safeProductData.availableVariants.find(
-          (v) => v.variantId === variantId,
-        );
-        if (newVariant) {
-          currentVariant = newVariant;
-          updateProductDisplay();
-          checkWishlistStatus();
+      colorButtons.forEach((btn) => {
+        const supportedSizes = btn.dataset.sizes.split(",");
+        if (supportedSizes.includes(selectedSize)) {
+          btn.style.display = "block";
+          count++;
+          if (!firstVisible) firstVisible = btn;
+        } else {
+          btn.style.display = "none";
         }
       });
+
+      if (sizeHint)
+        sizeHint.textContent = `${count} color${count > 1 ? "s" : ""} available`;
+
+      if (firstVisible) firstVisible.click();
+    }
+
+    // Size buttons
+    sizeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        sizeButtons.forEach((b) =>
+          b.classList.remove(
+            "border-[#E6A62C]",
+            "bg-[#fff9ef]",
+            "text-[#033E59]",
+          ),
+        );
+        btn.classList.add("border-[#E6A62C]", "bg-[#fff9ef]", "text-[#033E59]");
+
+        filterColorsBySize(btn.dataset.size);
+      });
     });
+
+    // Color buttons
+    document.getElementById("variantSection").addEventListener("click", (e) => {
+      const btn = e.target.closest(".color-variant");
+      if (!btn) return;
+
+      document
+        .querySelectorAll(".color-variant")
+        .forEach((b) =>
+          b.classList.remove("ring-2", "ring-[#E6A62C]", "ring-offset-2"),
+        );
+      btn.classList.add("ring-2", "ring-[#E6A62C]", "ring-offset-2");
+
+      // Update main product info
+      document.getElementById("mainProductImage").src = btn.dataset.image;
+      document.querySelector(".price-display").textContent =
+        `₹${parseInt(btn.dataset.price).toLocaleString()}`;
+    });
+
+    // Initialize with first size
+    if (sizeButtons.length > 0) {
+      sizeButtons[0].click();
+    }
   }
 
   function updateProductDisplay() {
@@ -1347,7 +1379,7 @@
         ((safeProductData.currentMrpPrice -
           safeProductData.currentSellingPrice) /
           (safeProductData.currentMrpPrice || 1)) *
-        100,
+          100,
       ) || 0;
 
     // Get similar products from the database
@@ -1486,80 +1518,84 @@
     const root = document.getElementById("dynamicRoot");
     if (!root) return;
 
-    // Build variant cards HTML
-    let variantCardsHTML = "";
-    if (transformedData.colors && transformedData.colors.length > 0) {
-      variantCardsHTML = `
-       <div class="space-y-4 mt-4">
+    // ========== REFACTORED: SEPARATE SIZE & COLOR SECTIONS WITH DYNAMIC FILTERING ==========
+    // ==================== CLEAN DYNAMIC VARIANT SECTION ====================
 
-  <div class="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+    // Extract unique sizes
+    const sizeSet = new Set();
+    transformedData.colors.forEach((c) => {
+      if (c.sizes && Array.isArray(c.sizes)) {
+        c.sizes.forEach((s) => sizeSet.add(s));
+      } else if (c.size) {
+        sizeSet.add(c.size);
+      }
+    });
 
-    <!-- Variant Label -->
-    <span class="text-sm font-medium text-[#033E59] hidden sm:block sm:mt-4">
-      Variant:
-    </span>
+    const uniqueSizes = Array.from(sizeSet).sort();
 
-    <!-- Variant Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 w-full px-1 sm:px-0" id="colorSwatches">
+    let variantCardsHTML = `
+      <div class="mt-6 space-y-8" id="variantSection">
 
-      ${transformedData.colors
-          .map((c, idx) => {
-            const selected =
-              idx === 0
-                ? "ring-2 ring-[#E6A62C] ring-offset-1"
-                : "ring-1 ring-gray-200 hover:ring-[#E6A62C]";
+        <!-- SIZE SECTION -->
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+            <span class="text-sm font-semibold text-[#033E59]">Size</span>
+            <div class="h-px bg-gray-200 flex-1"></div>
+          </div>
+          <div class="flex flex-wrap gap-3" id="sizeOptions">
+            ${uniqueSizes
+              .map(
+                (size, idx) => `
+              <button class="size-btn px-6 py-3 text-sm font-medium border-2 rounded-2xl transition-all duration-200
+                             ${idx === 0 ? "border-[#E6A62C] bg-[#fff9ef] text-[#033E59] shadow-sm" : "border-gray-200 hover:border-[#E6A62C]"}"
+                      data-size="${size}">
+                ${size}
+              </button>
+            `,
+              )
+              .join("")}
+          </div>
+        </div>
 
-            return `
-          <button
-            class="group bg-white rounded-xl border border-gray-200 p-2 sm:p-3 transition-all duration-300 hover:shadow-md hover:-translate-y-[2px] ${selected}"
-            data-variant-id="${c.variantId}"
-            data-sku="${c.sku}"
-            data-price="${c.price}"
-            data-mrp="${c.mrp}"
-            data-stock="${c.stock}"
-            data-image="${c.image}"
-          >
-
-            <!-- Image -->
-            <div class="w-full aspect-square rounded-lg overflow-hidden mb-2 sm:mb-3">
-              <img
-                src="${c.image}"
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                alt="${c.name}"
-              >
+        <!-- COLOR SECTION -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-semibold text-[#033E59]">Color</span>
+              <div class="h-px bg-gray-200 flex-1"></div>
             </div>
+            <span id="sizeHint" class="text-xs text-gray-500 font-medium"></span>
+          </div>
 
-            <!-- Variant Name -->
-            <div class="text-xs sm:text-sm font-medium text-[#033E59] text-center mb-1 sm:mb-2">
-              ${c.name}
-            </div>
-
-            <!-- Size -->
-            <div class="text-[11px] sm:text-xs text-gray-500 text-center mb-1">
-              ${c.size || "Standard"}
-            </div>
-
-            <!-- Sizes -->
-            <div class="flex justify-center gap-1 flex-wrap">
-              ${(c.sizes || ["S", "M", "L"])
-                .map(
-                  (size) =>
-                    `<span class="text-[9px] sm:text-[10px] px-1.5 sm:px-2 py-[2px] border border-gray-300 rounded text-gray-600">${size}</span>`,
-                )
-                .join("")}
-            </div>
-
-          </button>
-          `;
-          })
-          .join("")}
-
-    </div>
-  </div>
-
-</div>
-      `;
-    }
+          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4" id="colorSwatches">
+            ${transformedData.colors
+              .map(
+                (c) => `
+              <button class="color-variant group bg-white rounded-2xl border border-gray-200 p-2 transition-all hover:shadow-md hover:-translate-y-1"
+                      data-variant-id="${c.variantId}"
+                      data-sku="${c.sku || ""}"
+                      data-price="${c.price}"
+                      data-mrp="${c.mrp}"
+                      data-stock="${c.stock}"
+                      data-image="${c.image}"
+                      data-sizes="${(c.sizes || [c.size || "Standard"]).join(",")}">
+                <div class="aspect-square rounded-xl overflow-hidden mb-3">
+                  <img src="${c.image}" 
+                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                       alt="${c.name}">
+                </div>
+                <div class="text-center">
+                  <div class="text-sm font-medium text-[#033E59]">${c.name}</div>
+                  <div class="text-base font-semibold text-[#E6A62C] mt-1">₹${c.price}</div>
+                </div>
+              </button>
+            `,
+              )
+              .join("")}
+          </div>
+        </div>
+      </div>
+    `;
 
     // Build coupons HTML for overlay
     let couponsHTML = "";
@@ -1607,12 +1643,12 @@
             <div class="flex gap-2">
               <div class="flex flex-col gap-2 w-12" id="thumbContainer">
                 ${transformedData.mainImages
-        .map(
-          (img, idx) => `
+                  .map(
+                    (img, idx) => `
                   <img src="${img.thumb}" data-full="${img.full}" class="thumbnail-img w-full h-16 object-cover rounded-md ${idx === 0 ? "active" : ""} cursor-pointer" />
                 `,
-        )
-        .join("")}
+                  )
+                  .join("")}
               </div>
               <div class="relative flex-1 bg-white rounded-xl border border-stone-100 shadow-sm flex items-center justify-center p-2 h-[320px]">
                 <img id="mainProductImage" src="${transformedData.mainImages[0]?.full || transformedData.mainImages[0]?.thumb}" alt="Product" class="max-h-full max-w-full object-contain" />
@@ -1768,8 +1804,9 @@
     Only ${transformedData.stock} items left in stock
   </p>
 
-  ${safeProductData.isCustomizable
-        ? `
+  ${
+    safeProductData.isCustomizable
+      ? `
       <span class="text-gray-300">|</span>
 
       <a href="https://wa.me/919876543210"
@@ -1784,8 +1821,8 @@
 
       </a>
       `
-        : ""
-      }
+      : ""
+  }
 
 </div>
 
@@ -2297,7 +2334,7 @@ bg-gray-100 px-2 py-0.5 rounded-md">
       setupEventListeners();
 
       setTimeout(() => {
-        setupVariantSelection();
+        setupDynamicVariants();
         document
           .querySelectorAll(".add-to-cart-btn")
           .forEach((btn) => btn.addEventListener("click", handleAddToCart));

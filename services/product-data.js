@@ -197,7 +197,7 @@ const ProductDatabase = {
   },
 
   // ========== WALL CLOCKS (IDs: 101-110) ==========
-  wallClock1: {
+ wallClock1: {
     productId: 101,
     productName: "Rustic Wooden Effect Wall Clock",
     brandName: "Artezo",
@@ -208,7 +208,7 @@ const ProductDatabase = {
     currentStock: 45,
     mainImage:
       "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
-        mockupImages: [
+    mockupImages: [
       "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
       "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
       "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
@@ -220,40 +220,152 @@ const ProductDatabase = {
           "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
       },
     ],
-    availableVariants: [
+   availableVariants: [
+      // ===== 12 INCH SIZE - 3 COLOR VARIANTS =====
       {
-        variantId: "WC-101-S",
+        variantId: "WC-101-S-BRN",
         color: "Natural Brown",
+        sku: "WC-101-S-BRN",
         price: 999,
         mrp: 1899,
         stock: 25,
-        mainImage:
-          "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
-        size: "Small (12 inch)",
-        sizes: ["S", "M", "L"],
+        mainImage: "https://cdn.shopify.com/s/files/1/0632/2526/6422/products/wall-clock-clay-play-wall-clock-1.jpg?v=1776767439&width=1728",
+        size: "12 inch",
+        sizes: ["12 inch"],
+        titleName: "Natural Brown - 12 inch"
       },
       {
-        variantId: "WC-101-M",
+        variantId: "WC-101-S-BLK",
+        color: "Matte Black",
+        sku: "WC-101-S-BLK",
+        price: 1099,
+        mrp: 1999,
+        stock: 18,
+        mainImage: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQQfqvMxpKgtsZCylI4jx0i3sPhutPUd8_USZ3XzoGgPTiSOx2CRMM_uB1vjusIqydFvH1zVXWN4BjSSPXZjKy3ss6ZHQGMycDHdzmhM9w&usqp=CAc",
+        size: "12 inch",
+        sizes: ["12 inch"],
+        titleName: "Matte Black - 12 inch"
+      },
+      {
+        variantId: "WC-101-S-WHT",
+        color: "Ivory White",
+        sku: "WC-101-S-WHT",
+        price: 949,
+        mrp: 1799,
+        stock: 30,
+        mainImage: "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
+        size: "12 inch",
+        sizes: ["12 inch"],
+        titleName: "Ivory White - 12 inch"
+      },
+
+      // ===== 15 INCH SIZE - 4 COLOR VARIANTS =====
+      {
+        variantId: "WC-101-M-BRN",
         color: "Natural Brown",
+        sku: "WC-101-M-BRN",
         price: 1299,
         mrp: 2499,
-        stock: 18,
-        mainImage:
-          "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
-        size: "Medium (14 inch)",
-        sizes: ["Small", "Medium", "Large"],
+        stock: 22,
+        mainImage: "https://images-eu.ssl-images-amazon.com/images/I/71VGxQvXZAL._AC_UL600_SR600,600_.jpg",
+        sizes: ["15 inch"],
+        titleName: "Natural Brown - 15 inch"
       },
       {
-        variantId: "WC-101-L",
+        variantId: "WC-101-M-BLK",
+        color: "Matte Black",
+        sku: "WC-101-M-BLK",
+        price: 1399,
+        mrp: 2699,
+        stock: 15,
+        mainImage: "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
+        sizes: ["15 inch"],
+        titleName: "Matte Black - 15 inch"
+      },
+      {
+        variantId: "WC-101-M-GLD",
+        color: "Antique Gold",
+        sku: "WC-101-M-GLD",
+        price: 1499,
+        mrp: 2899,
+        stock: 10,
+        mainImage: "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
+        sizes: ["15 inch"],
+        titleName: "Antique Gold - 15 inch"
+      },
+      {
+        variantId: "WC-101-M-COPPER",
+        color: "Rustic Copper",
+        sku: "WC-101-M-COPPER",
+        price: 1449,
+        mrp: 2799,
+        stock: 8,
+        mainImage: "https://images-eu.ssl-images-amazon.com/images/I/71VGxQvXZAL._AC_UL600_SR600,600_.jpg",
+        sizes: ["15 inch"],
+        titleName: "Rustic Copper - 15 inch"
+      },
+
+      // ===== 18 INCH SIZE - 5 COLOR VARIANTS (Updated) =====
+      {
+        variantId: "WC-101-L-BRN",
         color: "Natural Brown",
+        sku: "WC-101-L-BRN",
         price: 1699,
         mrp: 3199,
         stock: 12,
-        mainImage:
-          "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
-        size: "Large (18 inch)",
-        sizes: ["Small", "Medium", "Large"],
+        mainImage: "https://i.etsystatic.com/34705037/r/il/e6fbee/7524212685/il_1588xN.7524212685_971u.jpg",
+        size: "18 inch",
+        sizes: ["18 inch"],
+        titleName: "Natural Brown - 18 inch"
       },
+      {
+        variantId: "WC-101-L-BLK",
+        color: "Matte Black",
+        sku: "WC-101-L-BLK",
+        price: 1799,
+        mrp: 3399,
+        stock: 7,
+        mainImage: "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
+        size: "18 inch",
+        sizes: ["18 inch"],
+        titleName: "Matte Black - 18 inch"
+      },
+      {
+        variantId: "WC-101-L-WHT",
+        color: "Ivory White",
+        sku: "WC-101-L-WHT",
+        price: 1749,
+        mrp: 3299,
+        stock: 9,
+        mainImage: "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
+        size: "18 inch",
+        sizes: ["18 inch"],
+        titleName: "Ivory White - 18 inch"
+      },
+      {
+        variantId: "WC-101-L-GLD",
+        color: "Antique Gold",
+        sku: "WC-101-L-GLD",
+        price: 1899,
+        mrp: 3599,
+        stock: 6,
+        mainImage: "https://i.etsystatic.com/34705037/r/il/e6fbee/7524212685/il_1588xN.7524212685_971u.jpg",
+        size: "18 inch",
+        sizes: ["18 inch"],
+        titleName: "Antique Gold - 18 inch"
+      },
+      {
+        variantId: "WC-101-L-COPPER",
+        color: "Rustic Copper",
+        sku: "WC-101-L-COPPER",
+        price: 1849,
+        mrp: 3499,
+        stock: 5,
+        mainImage: "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
+        size: "18 inch",
+        sizes: ["18 inch"],
+        titleName: "Rustic Copper - 18 inch"
+      }
     ],
     availabeCoupons: [
       {
@@ -290,8 +402,7 @@ const ProductDatabase = {
         step: 1,
         title: "Choose Location",
         shortDescription: "Select wall location",
-        stepImage:
-          "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
+        stepImage: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400",
         shortNote: "Use level",
       },
     ],
@@ -304,8 +415,7 @@ const ProductDatabase = {
     isCustomizable: false,
     price: 1299,
     original: 2499,
-    image:
-      "https://i.pinimg.com/736x/b3/41/03/b34103909eaf77d68d8dae7d368cc28c.jpg",
+    image: "https://i.pinimg.com/736x/b3/41/03/b34103909eaf77d68d8dae7d368cc28c.jpg",
     subcategory: "wall-clock",
     popular: 120,
     newest: 3,
