@@ -1519,7 +1519,7 @@
     if (!root) return;
 
     // ========== REFACTORED: SEPARATE SIZE & COLOR SECTIONS WITH DYNAMIC FILTERING #patch-1 ==========
-  
+
     // Extract unique sizes
     const sizeSet = new Set();
     transformedData.colors.forEach((c) => {
@@ -1637,29 +1637,38 @@
     // Build main HTML
     const html = `
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-10 items-start px-4 md:px-0">
-        <div class="md:col-span-5">
-          <div class="sticky top-20">
-            <div class="flex gap-2">
-              <div class="flex flex-col gap-2 w-12" id="thumbContainer">
-                ${transformedData.mainImages
-                  .map(
-                    (img, idx) => `
-                  <img src="${img.thumb}" data-full="${img.full}" class="thumbnail-img w-full h-16 object-cover rounded-md ${idx === 0 ? "active" : ""} cursor-pointer" />
-                `,
-                  )
-                  .join("")}
-              </div>
-              <div class="relative flex-1 bg-white rounded-xl border border-stone-100 shadow-sm flex items-center justify-center p-2 h-[320px]">
-                <img id="mainProductImage" src="${transformedData.mainImages[0]?.full || transformedData.mainImages[0]?.thumb}" alt="Product" class="max-h-full max-w-full object-contain" />
-                <span class="absolute top-2 left-2 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full shadow" style="background: #e6a62c">${transformedData.discountPercent}% OFF</span>
-              </div>
-            </div>
-          </div>
-        </div>
+       <div class="md:col-span-5">
+  <div class="sticky top-20">
+    <div class="flex gap-2">
+      <div class="flex flex-col gap-2 w-12" id="thumbContainer">
+        ${transformedData.mainImages
+          .map(
+            (img, idx) => `
+          <img src="${img.thumb}" data-full="${img.full}" class="thumbnail-img w-full h-16 object-cover rounded-md ${idx === 0 ? "active" : ""} cursor-pointer" />
+        `,
+          )
+          .join("")}
+      </div>
+      <div class="relative flex-1 bg-white rounded-xl border border-stone-100 shadow-sm flex items-center justify-center p-2 h-[320px]">
+        <!-- Wishlist Icon -->
+        <button class="wishlist-icon-btn absolute top-2 right-2 z-10 w-9 h-9 flex items-center justify-center bg-white border border-[#e5e7eb] rounded-full shadow-sm hover:border-[#e39f32] transition-all duration-300" 
+                onclick="event.stopPropagation();">
+          <i class="fa-regular fa-heart text-[#1D3C4A]"></i>
+        </button>
+        
+        <!-- Main Product Image -->
+        <img id="mainProductImage" src="${transformedData.mainImages[0]?.full || transformedData.mainImages[0]?.thumb}" alt="Product" class="max-h-full max-w-full object-contain" />
+        
+        <!-- Discount Badge -->
+        <span class="absolute top-2 left-2 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full shadow" style="background: #e6a62c">${transformedData.discountPercent}% OFF</span>
+      </div>
+    </div>
+  </div>
+</div>
 
         <div class="md:col-span-7">
           <div class="overflow-y-auto max-h-[calc(100vh-5rem)] pr-2 space-y-3 hide-scrollbar">
-            <h1 class="text-3xl md:text-4xl font-normal font-zain leading-tight text-[#033E59]">${transformedData.name}</h1>
+            <h1 class="text-xl md:text-2xl font-normal font-zain leading-tight text-[#033E59]">${transformedData.name}</h1>
             
             <div class="flex items-start justify-between gap-3 mb-2">
               <div class="flex items-center gap-2 flex-wrap flex-1">
@@ -1828,18 +1837,39 @@
 </div>
 
             <!-- Delivery Service -->
-            <div class="mt-4 px-4 py-3 rounded-lg border border-[#e5e7eb] bg-[#f8fafc]">
-              <div class="flex flex-wrap items-center justify-between gap-4 text-xs text-[#1D3C4A]">
-                <div class="flex items-center gap-2"><i class="fa-solid fa-box text-[#e39f32]"></i><span>Dispatch: <span class="font-medium">24–48h</span></span></div>
-                <div class="w-px h-4 bg-gray-300"></div>
-                <div class="flex items-center gap-2"><i class="fa-solid fa-calendar-check text-[#e39f32]"></i><span>Delivery: <span class="font-medium">4–7d</span></span></div>
-                <div class="w-px h-4 bg-gray-300"></div>
-                <div class="flex items-center gap-2"><i class="fa-solid fa-hand-holding-dollar text-[#e39f32]"></i><span>COD Available</span></div>
-                <div class="w-px h-4 bg-gray-300"></div>
-                <div class="flex items-center gap-2"><i class="fa-solid fa-truck text-[#e39f32]"></i><span>Free Shipping</span></div>
-                <div class="w-px h-4 bg-gray-300"></div>
-                <div class="flex items-center gap-2"><i class="fa-solid fa-rotate-left text-[#e39f32]"></i><span>Easy Returns</span></div>
-              </div>
+              <div class="flex flex-wrap items-center justify-center md:justify-between gap-x-4 gap-y-2 text-[11px] sm:text-xs text-[#1D3C4A] bg-[#faf8f4] border border-[#efe5d3] rounded-xl px-3 py-2.5">
+
+  <div class="flex items-center gap-1.5 whitespace-nowrap">
+    <i class="fa-solid fa-box text-[#e39f32] text-[10px]"></i>
+    <span>24–48h Dispatch</span>
+  </div>
+
+  <div class="flex items-center gap-1.5 whitespace-nowrap">
+    <i class="fa-solid fa-calendar-check text-[#e39f32] text-[10px]"></i>
+    <span>4–7d Delivery</span>
+  </div>
+
+  <div class="flex items-center gap-1.5 whitespace-nowrap">
+    <i class="fa-solid fa-hand-holding-dollar text-[#e39f32] text-[10px]"></i>
+    <span>COD Available</span>
+  </div>
+
+  <div class="flex items-center gap-1.5 whitespace-nowrap">
+    <i class="fa-solid fa-truck text-[#e39f32] text-[10px]"></i>
+    <span>Free Shipping</span>
+  </div>
+
+  <div class="flex items-center gap-1.5 whitespace-nowrap">
+    <i class="fa-solid fa-shield-halved text-[#e39f32] text-[10px]"></i>
+    <span>Secure Payment</span>
+  </div>
+
+  <div class="flex items-center gap-1.5 whitespace-nowrap">
+    <i class="fa-solid fa-rotate-left text-[#e39f32] text-[10px]"></i>
+    <span>Easy Returns</span>
+  </div>
+
+</div>
             </div>
 
             <!-- Additional Information Accordion -->
@@ -1870,7 +1900,7 @@
     if (!acc) return;
 
     let accHtml = `
-      <div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-5 text-left font-medium font-lexend text-[#1D3C4A]">Highlights<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm"><div class="rounded-lg overflow-hidden bg-white border border-[#edf2f4] shadow-sm"><table class="w-full text-left border-collapse"><tbody>`;
+      <div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-4 text-left font-medium font-lexend text-[#1D3C4A]">Highlights<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm"><div class="rounded-lg overflow-hidden bg-white border border-[#edf2f4] shadow-sm"><table class="w-full text-left border-collapse"><tbody>`;
 
     transformedData.highlights.forEach((h) => {
       let rowClass = h.accent
@@ -1879,26 +1909,26 @@
       let valClass = h.accent
         ? "text-[#e39f32] font-medium"
         : "text-[#1D3C4A]/70";
-      accHtml += `<tr class="${rowClass}"><td class="py-3 px-4 font-medium border-r border-[#f1f5f7] w-1/3 text-[#1D3C4A]">${h.label}<\/td><td class="py-3 px-4 ${valClass}">${h.value}<\/td><\/tr>`;
+      accHtml += `<tr class="${rowClass}"><td class="py-3 px-3 font-medium border-r border-[#f1f5f7] w-1/3 text-[#1D3C4A]">${h.label}<\/td><td class="py-3 px-4 ${valClass}">${h.value}<\/td><\/tr>`;
     });
 
     accHtml += `</tbody><\/table><\/div><\/div><\/div><\/div>`;
-    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-5 text-left font-medium font-lexend">Product Description<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm text-[#1D3C4A]/80 leading-relaxed space-y-4">${transformedData.description}<\/div><\/div><\/div>`;
-    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-5 text-left font-medium font-lexend text-[#1D3C4A]">Specifications<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm"><div class="rounded-lg overflow-hidden bg-white border border-[#edf2f4] shadow-sm"><table class="w-full text-left border-collapse"><tbody>`;
+    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-3 text-left font-medium font-lexend">Product Description<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm text-[#1D3C4A]/80 leading-relaxed space-y-4">${transformedData.description}<\/div><\/div><\/div>`;
+    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-3 text-left font-medium font-lexend text-[#1D3C4A]">Specifications<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm"><div class="rounded-lg overflow-hidden bg-white border border-[#edf2f4] shadow-sm"><table class="w-full text-left border-collapse"><tbody>`;
 
     transformedData.specifications.forEach((s) => {
-      accHtml += `<tr class="border-b border-[#f1f5f7]"><td class="py-3 px-4 font-medium border-r border-[#f1f5f7] w-1/3 text-[#1D3C4A]">${s.label}<\/td><td class="py-3 px-4 text-[#1D3C4A]/70">${s.value}<\/td><\/tr>`;
+      accHtml += `<tr class="border-b border-[#f1f5f7]"><td class="py-3 px-3 font-medium border-r border-[#f1f5f7] w-1/3 text-[#1D3C4A]">${s.label}<\/td><td class="py-3 px-4 text-[#1D3C4A]/70">${s.value}<\/td><\/tr>`;
     });
 
     accHtml += `</tbody><\/table><\/div><\/div><\/div><\/div>`;
-    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-4 text-left font-medium font-lexend text-[#1D3C4A]">Additional Information<span class="icon text-lg transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-5 text-sm"><div class="grid gap-3">`;
+    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-3 text-left font-medium font-lexend text-[#1D3C4A]">Additional Information<span class="icon text-lg transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-5 text-sm"><div class="grid gap-3">`;
 
     transformedData.additionalInfo.forEach((info) => {
       accHtml += `<div class="flex items-start gap-2 p-3 rounded-md bg-[#f8fbfc] border border-[#eef3f6]"><div class="w-1.5 h-1.5 mt-2 rounded-full bg-[#e39f32]"></div><p class="text-[#1D3C4A]/75 text-[13px]">${info}</p></div>`;
     });
 
     accHtml += `</div></div></div></div>`;
-    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-4 text-left font-medium font-lexend text-[#1D3C4A]">FAQs<span class="icon text-lg transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm space-y-4">`;
+    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-3 text-left font-medium font-lexend text-[#1D3C4A]">FAQs<span class="icon text-lg transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm space-y-4">`;
 
     transformedData.faqs.forEach((faq) => {
       accHtml += `<div class="p-4 rounded-lg border border-[#eef3f6] bg-white shadow-sm"><p class="font-medium text-[#1D3C4A] text-[14px]">${faq.q}</p><p class="mt-2 text-[#1D3C4A]/70 text-[13px] leading-relaxed">${faq.a}</p></div>`;
@@ -2110,7 +2140,7 @@
 <div class="flex flex-wrap md:flex-nowrap items-center md:justify-center justify-between w-full gap-2 md:gap-4">
 
   <!-- Price -->
-  <div class="flex items-center gap-2 whitespace-nowrap">
+  <!-- <div class="flex items-center gap-2 whitespace-nowrap"> 
     <span class="font-medium font-lexend text-lg sm:text-xl" style="color:#e39f32">
       ₹${transformedData.price.toLocaleString()}
     </span>
@@ -2118,30 +2148,42 @@
 bg-gray-100 px-2 py-0.5 rounded-md">
   ₹${transformedData.originalPrice.toLocaleString()}
 </span>
-  </div>
+  </div>-->
 
   <!-- Cart + Buy -->
-  <div class="flex items-center gap-2">
-    <button class="border px-3 md:px-4 py-2 rounded-full text-sm md:text-base font-medium font-lexend flex items-center gap-2 transition hover:bg-[#1D3C4A]/10"
-    style="border-color:#1d3c4a;color:#1d3c4a">
-      <i class="fas fa-cart-plus text-xs md:text-sm"></i>
-      Cart
-    </button>
+ <div class="flex items-center justify-center gap-2 w-full">
 
-    <button class="px-4 md:px-5 py-2 rounded-full text-sm md:text-base font-medium font-lexend flex items-center gap-2"
-    style="background-color:#1d3c4a;color:white">
-      Buy
+  <!-- ADD TO CART -->
+  <div class="flex-1 md:flex-none bg-[#E39F32] rounded-xl border border-[#1d3c4a] overflow-hidden">
+    <button
+      class="w-full md:min-w-[190px] px-4 md:px-6 py-3 rounded-xl text-sm md:text-base font-medium font-lexend flex items-center justify-center gap-2 transition-all duration-300 hover:bg-[#1D3C4A]/10"
+      style="color:#1d3c4a"
+    >
+      <i class="fas fa-cart-plus text-xs md:text-sm"></i>
+      Add to Cart
+    </button>
+  </div>
+
+  <!-- BUY NOW -->
+  <div class="flex-1 md:flex-none bg-white rounded-xl border border-gray-300 overflow-hidden">
+    <button
+      class="w-full md:min-w-[190px] px-4 md:px-6 py-3 rounded-xl text-sm md:text-base font-medium font-lexend flex items-center justify-center gap-2 transition-all duration-300 hover:bg-gray-50"
+      style="color:#1d3c4a"
+    >
+      Buy Now
       <i class="fas fa-arrow-right text-xs md:text-sm"></i>
     </button>
   </div>
 
+</div>
+
   <!-- WhatsApp Video Button -->
-  <a href="https://wa.me/+919876543210?text=Hi%2C%20I%27m%20interested%20in%20this%20product.%20Can%20you%20please%20send%20live%20product%20videos%3F"
+ <!-- <a href="https://wa.me/+919876543210?text=Hi%2C%20I%27m%20interested%20in%20this%20product.%20Can%20you%20please%20send%20live%20product%20videos%3F"
   target="_blank"
   class="w-full md:w-auto mt-1 md:mt-0 px-4 py-2 rounded-full text-sm md:text-base font-medium font-lexend flex items-center justify-center gap-2 bg-green-600 text-white">
     <i class="fab fa-whatsapp text-sm"></i>
     Get Live Product Video
-  </a>
+  </a> -->
 
 </div>
 `;
