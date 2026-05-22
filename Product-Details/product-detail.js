@@ -1640,29 +1640,23 @@
        <div class="md:col-span-5">
   <div class="sticky top-20">
     <div class="flex gap-2">
-      <div class="flex flex-col gap-2 w-12" id="thumbContainer">
-        ${transformedData.mainImages
-          .map(
-            (img, idx) => `
-          <img src="${img.thumb}" data-full="${img.full}" class="thumbnail-img w-full h-16 object-cover rounded-md ${idx === 0 ? "active" : ""} cursor-pointer" />
-        `,
-          )
-          .join("")}
-      </div>
-      <div class="relative flex-1 bg-white rounded-xl border border-stone-100 shadow-sm flex items-center justify-center p-2 h-[320px]">
-        <!-- Wishlist Icon -->
-        <button class="wishlist-icon-btn absolute top-2 right-2 z-10 w-9 h-9 flex items-center justify-center bg-white border border-[#e5e7eb] rounded-full shadow-sm hover:border-[#e39f32] transition-all duration-300" 
-                onclick="event.stopPropagation();">
-          <i class="fa-regular fa-heart text-[#1D3C4A]"></i>
-        </button>
-        
-        <!-- Main Product Image -->
-        <img id="mainProductImage" src="${transformedData.mainImages[0]?.full || transformedData.mainImages[0]?.thumb}" alt="Product" class="max-h-full max-w-full object-contain" />
-        
-        <!-- Discount Badge -->
-        <span class="absolute top-2 left-2 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full shadow" style="background: #e6a62c">${transformedData.discountPercent}% OFF</span>
-      </div>
-    </div>
+  <div class="flex flex-col gap-2 w-12" id="thumbContainer">
+    ${transformedData.mainImages
+      .map(
+        (img, idx) => `
+      <img src="${img.thumb}" data-full="${img.full}" class="thumbnail-img w-full h-16 object-cover rounded-md ${idx === 0 ? "active" : ""} cursor-pointer" />
+    `,
+      )
+      .join("")}
+  </div>
+  <div class="relative flex-1 bg-white rounded-xl border border-stone-100 shadow-sm flex items-center justify-center p-2 h-[320px]">
+    <!-- Main Product Image -->
+    <img id="mainProductImage" src="${transformedData.mainImages[0]?.full || transformedData.mainImages[0]?.thumb}" alt="Product" class="max-h-full max-w-full object-contain" />
+    
+    <!-- Discount Badge -->
+    <span class="absolute top-2 left-2 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full shadow" style="background: #e6a62c">${transformedData.discountPercent}% OFF</span>
+  </div>
+</div>
   </div>
 </div>
 
@@ -1670,25 +1664,42 @@
           <div class="overflow-y-auto max-h-[calc(100vh-5rem)] pr-2 space-y-3 hide-scrollbar">
             <h1 class="text-xl md:text-2xl font-normal font-zain leading-tight text-[#033E59]">${transformedData.name}</h1>
             
-            <div class="flex items-start justify-between gap-3 mb-2">
-              <div class="flex items-center gap-2 flex-wrap flex-1">
-                <div class="flex text-amber-400 text-sm gap-0.5">${renderStars(transformedData.rating)}</div>
-                <span class="text-sm font-lexend text-stone-600">${transformedData.reviewCount} reviews</span>
-                <div class="flex items-center gap-2 px-2 py-0.5 rounded-full border ml-2" style="background-color:#d6e8f9; border-color:#e5e7eb">
-                  <span class="text-xs font-lexend font-semibold text-[#1D3C4A]">Brand : ${transformedData.brand}</span>
-                </div>
-              </div>
-              <div class="relative flex-shrink-0" id="shareContainer" style="z-index: 30;">
-                <button id="shareButton" class="w-9 h-9 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-100 transition bg-white shadow-sm"><i class="fa-solid fa-share-nodes text-[#033E59]"></i></button>
-                <div id="sharePopup" class="absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl border p-2 z-40 hidden">
-                  <div class="flex flex-col gap-1 text-sm">
-                    <button class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left"><i class="fa-solid fa-link font-lexend text-[#E6A62C]"></i>Copy link</button>
-                    <button class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left"><i class="fa-solid fa-envelope font-lexend text-[#E6A62C]"></i>Email</button>
-                    <button class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left"><i class="fa-brands fa-whatsapp font-lexend text-[#E6A62C]"></i>WhatsApp</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+           <div class="flex items-start justify-between gap-3 mb-2">
+  <div class="flex items-center gap-2 flex-wrap flex-1">
+    <div class="flex text-amber-400 text-sm gap-0.5">${renderStars(transformedData.rating)}</div>
+    <span class="text-sm font-lexend text-stone-600">${transformedData.reviewCount} reviews</span>
+    <div class="flex items-center gap-2 px-2 py-0.5 rounded-full border ml-2" style="background-color:#d6e8f9; border-color:#e5e7eb">
+      <span class="text-xs font-lexend font-semibold text-[#1D3C4A]">Brand : ${transformedData.brand}</span>
+    </div>
+  </div>
+  
+  <div class="flex items-center gap-2 flex-shrink-0">
+    <!-- Wishlist Button -->
+    <button class="wishlist-icon-btn w-9 h-9 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-100 transition bg-white shadow-sm">
+      <i class="fa-regular fa-heart text-[#033E59]"></i>
+    </button>
+    
+    <!-- Share Button -->
+    <div class="relative" id="shareContainer" style="z-index: 30;">
+      <button id="shareButton" class="w-9 h-9 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-100 transition bg-white shadow-sm">
+        <i class="fa-solid fa-share-nodes text-[#033E59]"></i>
+      </button>
+      <div id="sharePopup" class="absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl border p-2 z-40 hidden">
+        <div class="flex flex-col gap-1 text-sm">
+          <button class="share-option flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left" data-share-type="link">
+            <i class="fa-solid fa-link font-lexend text-[#E6A62C]"></i>Copy link
+          </button>
+          <button class="share-option flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left" data-share-type="email">
+            <i class="fa-solid fa-envelope font-lexend text-[#E6A62C]"></i>Email
+          </button>
+          <button class="share-option flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left" data-share-type="whatsapp">
+            <i class="fa-brands fa-whatsapp font-lexend text-[#E6A62C]"></i>WhatsApp
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
             <!-- Deal of the day -->
             <div class="max-w-[520px] p-2.5 rounded-2xl bg-gradient-to-br from-[#e39f32]/5 to-[#1D3C4A]/5 border border-[#e5e7eb] relative space-y-2 overflow-hidden">
@@ -2098,6 +2109,104 @@
     }
   }
 
+  // ==================== SHARE FUNCTIONALITY ====================
+
+  function setupShareFunctionality() {
+    const shareButton = document.getElementById("shareButton");
+    const sharePopup = document.getElementById("sharePopup");
+
+    if (!shareButton || !sharePopup) return;
+
+    // Get current product URL and details
+    const currentUrl = window.location.href;
+    const productName =
+      safeProductData?.productName ||
+      transformedData?.name ||
+      "Check out this product";
+    const productPrice = transformedData?.price
+      ? `₹${transformedData.price}`
+      : "";
+    const productImage =
+      transformedData?.mainImages?.[0]?.full ||
+      safeProductData?.mainImage ||
+      "";
+
+    // Toggle popup
+    shareButton.addEventListener("click", function (e) {
+      e.stopPropagation();
+      sharePopup.classList.toggle("hidden");
+    });
+
+    // Close popup when clicking outside
+    document.addEventListener("click", function (e) {
+      if (!shareButton.contains(e.target) && !sharePopup.contains(e.target)) {
+        sharePopup.classList.add("hidden");
+      }
+    });
+
+    // Handle share options
+    document.querySelectorAll(".share-option").forEach((option) => {
+      option.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const shareType = this.dataset.shareType;
+
+        switch (shareType) {
+          case "link":
+            copyToClipboard(currentUrl);
+            showToast("Link copied to clipboard!", "success");
+            break;
+
+          case "email":
+            const emailSubject = encodeURIComponent(`Check out ${productName}`);
+            const emailBody = encodeURIComponent(
+              `Hi,\n\nI thought you might be interested in this product:\n\n${productName}\n${productPrice ? `Price: ${productPrice}\n` : ""}${currentUrl}\n\nRegards`,
+            );
+            window.location.href = `mailto:?subject=${emailSubject}&body=${emailBody}`;
+            break;
+
+          case "whatsapp":
+            const whatsappText = encodeURIComponent(
+              `Check out ${productName}! ${productPrice ? `Price: ${productPrice} ` : ""}${currentUrl}`,
+            );
+            window.open(`https://wa.me/?text=${whatsappText}`, "_blank");
+            break;
+        }
+
+        sharePopup.classList.add("hidden");
+      });
+    });
+  }
+
+  // Copy to clipboard helper function
+  function copyToClipboard(text) {
+    // Modern approach
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).catch((err) => {
+        console.error("Failed to copy:", err);
+        fallbackCopyToClipboard(text);
+      });
+    } else {
+      fallbackCopyToClipboard(text);
+    }
+  }
+
+  // Fallback for older browsers
+  function fallbackCopyToClipboard(text) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.style.position = "fixed";
+    textarea.style.top = "-9999px";
+    textarea.style.left = "-9999px";
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand("copy");
+    } catch (err) {
+      console.error("Fallback: Unable to copy", err);
+    }
+    document.body.removeChild(textarea);
+  }
+
   // ==================== INSTALLATION ====================
 
   function fillInstallation() {
@@ -2373,6 +2482,7 @@ bg-gray-100 px-2 py-0.5 rounded-md">
       fillInstallation();
       fillStickyBar();
       setupEventListeners();
+      setupShareFunctionality();
 
       setTimeout(() => {
         setupDynamicVariants(); //#patch 3 - Setup variant selection logic after HTML is rendered
