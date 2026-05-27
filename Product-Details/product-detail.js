@@ -1664,42 +1664,42 @@
           <div class="overflow-y-auto max-h-[calc(100vh-5rem)] pr-2 space-y-3 hide-scrollbar">
             <h1 class="text-xl md:text-2xl font-normal font-zain leading-tight text-[#033E59]">${transformedData.name}</h1>
             
-           <div class="flex items-start justify-between gap-3 mb-2">
-  <div class="flex items-center gap-2 flex-wrap flex-1">
-    <div class="flex text-amber-400 text-sm gap-0.5">${renderStars(transformedData.rating)}</div>
-    <span class="text-sm font-lexend text-stone-600">${transformedData.reviewCount} reviews</span>
-    <div class="flex items-center gap-2 px-2 py-0.5 rounded-full border ml-2" style="background-color:#d6e8f9; border-color:#e5e7eb">
-      <span class="text-xs font-lexend font-semibold text-[#1D3C4A]">Brand : ${transformedData.brand}</span>
-    </div>
-  </div>
-  
-  <div class="flex items-center gap-2 flex-shrink-0">
-    <!-- Wishlist Button -->
-    <button class="wishlist-icon-btn w-9 h-9 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-100 transition bg-white shadow-sm">
-      <i class="fa-regular fa-heart text-[#033E59]"></i>
-    </button>
-    
-    <!-- Share Button -->
-    <div class="relative" id="shareContainer" style="z-index: 30;">
-      <button id="shareButton" class="w-9 h-9 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-100 transition bg-white shadow-sm">
-        <i class="fa-solid fa-share-nodes text-[#033E59]"></i>
-      </button>
-      <div id="sharePopup" class="absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl border p-2 z-40 hidden">
-        <div class="flex flex-col gap-1 text-sm">
-          <button class="share-option flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left" data-share-type="link">
-            <i class="fa-solid fa-link font-lexend text-[#E6A62C]"></i>Copy link
-          </button>
-          <button class="share-option flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left" data-share-type="email">
-            <i class="fa-solid fa-envelope font-lexend text-[#E6A62C]"></i>Email
-          </button>
-          <button class="share-option flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left" data-share-type="whatsapp">
-            <i class="fa-brands fa-whatsapp font-lexend text-[#E6A62C]"></i>WhatsApp
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+                          <div class="flex items-start justify-between gap-3 mb-2">
+                            <div class="flex items-center gap-2 flex-wrap flex-1">
+                              <div class="flex text-amber-400 text-sm gap-0.5">${renderStars(transformedData.rating)}</div>
+                              <span class="text-sm font-lexend text-stone-600">${transformedData.reviewCount} reviews</span>
+                              <div class="flex items-center gap-2 px-2 py-0.5 rounded-full border ml-2" style="background-color:#d6e8f9; border-color:#e5e7eb">
+                                <span class="text-xs font-lexend font-semibold text-[#1D3C4A]">Brand : ${transformedData.brand}</span>
+                              </div>
+                            </div>
+                  
+                  <div class="flex items-center gap-2 flex-shrink-0">
+                    <!-- Wishlist Button -->
+                    <button class="wishlist-icon-btn w-9 h-9 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-100 transition bg-white shadow-sm">
+                      <i class="fa-regular fa-heart text-[#033E59]"></i>
+                    </button>
+                    
+                    <!-- Share Button -->
+                    <div class="relative" id="shareContainer" style="z-index: 30;">
+                      <button id="shareButton" class="w-9 h-9 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-100 transition bg-white shadow-sm">
+                        <i class="fa-solid fa-share-nodes text-[#033E59]"></i>
+                      </button>
+                      <div id="sharePopup" class="absolute right-0 mt-2 w-48 bg-white shadow-xl rounded-xl border p-2 z-40 hidden">
+                        <div class="flex flex-col gap-1 text-sm">
+                          <button class="share-option flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left" data-share-type="link">
+                            <i class="fa-solid fa-link font-lexend text-[#E6A62C]"></i>Copy link
+                          </button>
+                          <button class="share-option flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left" data-share-type="email">
+                            <i class="fa-solid fa-envelope font-lexend text-[#E6A62C]"></i>Email
+                          </button>
+                          <button class="share-option flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-yellow-50 w-full text-left" data-share-type="whatsapp">
+                            <i class="fa-brands fa-whatsapp font-lexend text-[#E6A62C]"></i>WhatsApp
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
             <!-- Deal of the day -->
             <div class="max-w-[520px] p-2.5 rounded-2xl bg-gradient-to-br from-[#e39f32]/5 to-[#1D3C4A]/5 border border-[#e5e7eb] relative space-y-2 overflow-hidden">
@@ -2430,7 +2430,7 @@ bg-gray-100 px-2 py-0.5 rounded-md">
     }
   }
 
-  // ==================== INITIALIZATION ====================
+  // ================== == INITIALIZATION ====================
 
   function init() {
     waitForProductDatabase(() => {
