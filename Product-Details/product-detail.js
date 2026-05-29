@@ -167,6 +167,200 @@
     };
   }
 
+
+  //=====================================================//
+  //      patch function 
+  //=====================================================//
+
+  // ==================== SEO URL FUNCTIONS - ADD TO YOUR CURRENT FILE ====================
+
+// ─── SLUGIFY HELPER ───────────────────────────────────────────────────────────
+function slugify(text) {
+    if (!text) return "product";
+    return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
+}
+
+// ─── GENERATE SEO URL FOR PRODUCT ────────────────────────────────────────────
+function generateProductSEOUrl(product) {
+    if (!product) return null;
+
+    const brandSlug    = slugify(product.brandName || "artezo");
+    const categorySlug = slugify(product.productCategory || "products");
+
+    let cleanName = product.productName || "product";
+    if (cleanName.toLowerCase().startsWith((product.brandName || "").toLowerCase())) {
+        cleanName = cleanName.substring((product.brandName || "").length).trim();
+    }
+    const productSlug = slugify(cleanName || product.productName);
+    const sku         = product.currentSku || `PROD-${product.productPrimeId || product.productId}`;
+
+    // Use file path so it works on Live Server + Hostinger without extra rewrite rules
+    return `/Product-Details/product-detail.html?id=${product.productPrimeId || product.productId}&sku=${sku}&brand=${brandSlug}&category=${categorySlug}&product=${productSlug}`;
+}
+
+// ─── REWRITE URL TO SEO FORMAT ───────────────────────────────────────────────
+function rewriteURLToSEO(variantSku) {
+    if (!safeProductData) return;
+
+    const baseSku = safeProductData.currentSku || `PROD-${safeProductData.productId}`;
+
+    // Keep the REAL file path — no fake /products/ path that breaks refresh
+    // and relative links. Only update query params for SEO signals.
+    const params = new URLSearchParams({
+        id:      safeProductData.productId,
+        sku:     baseSku,
+        brand:   slugify(safeProductData.brandName),
+        category: slugify(safeProductData.productCategory || "products"),
+        product: slugify(safeProductData.productName),
+    });
+
+    if (variantSku && variantSku !== `VAR-${safeProductData.productId}`) {
+        params.set("variant", variantSku);
+    }
+
+    // Result: /Product-Details/product-detail.html?id=1&sku=ART-WPLATE-GLD&brand=artezo&...
+    const newURL = `/Product-Details/product-detail.html?${params.toString()}`;
+    history.replaceState({ productId: safeProductData.productId }, document.title, newURL);
+    console.log("[ProductDetail] URL updated to:", newURL);
+}
+
+// ─── PARSE SEO PARAMETERS FROM URL ───────────────────────────────────────────
+function getSEOParameters() {
+    const searchParams = new URLSearchParams(window.location.search);
+    return {
+        brand:    searchParams.get('brand'),
+        product:  searchParams.get('product'),
+        sku:      searchParams.get('sku'),
+        variant:  searchParams.get('variant'),
+        category: searchParams.get('category')
+    };
+}
+
+// ─── UPDATE SEO META TAGS ─────────────────────────────────────────────────────
+function updateSEOMetaTags(productData, seoData) {
+    if (!productData) return;
+    
+    // Build clean title
+    let title = `${productData.brandName} ${productData.productName}`;
+    if (seoData?.variant) {
+        const variantName = seoData.variant.replace(/-/g, ' ');
+        title += ` - ${variantName}`;
+    }
+    title += ` | Buy Online at Best Price in India`;
+    document.title = title;
+    
+    // Meta description
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+        metaDesc = document.createElement('meta');
+        metaDesc.name = 'description';
+        document.head.appendChild(metaDesc);
+    }
+    const price = productData.currentSellingPrice;
+    const discount = productData.currentMrpPrice > price ? 
+        `${Math.round(((productData.currentMrpPrice - price) / productData.currentMrpPrice) * 100)}% off` : '';
+    metaDesc.content = `Buy ${productData.brandName} ${productData.productName} online at best price. ${discount}. Free shipping. COD available. Shop now!`;
+    
+    // Meta keywords
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+        metaKeywords = document.createElement('meta');
+        metaKeywords.name = 'keywords';
+        document.head.appendChild(metaKeywords);
+    }
+    const keywords = [
+        productData.brandName,
+        productData.productName,
+        productData.productCategory,
+        productData.productSubCategory,
+        ...(productData.globalTags || [])
+    ].filter(Boolean).join(', ');
+    metaKeywords.content = keywords;
+    
+    // Canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+        canonical = document.createElement('link');
+        canonical.rel = 'canonical';
+        document.head.appendChild(canonical);
+    }
+    const canonicalUrl = `${window.location.origin}${window.location.pathname}?id=${productData.productId}`;
+    canonical.href = canonicalUrl;
+    
+    // Open Graph tags
+    let ogTitle = document.querySelector('meta[property="og:title"]');
+    if (!ogTitle) {
+        ogTitle = document.createElement('meta');
+        ogTitle.setAttribute('property', 'og:title');
+        document.head.appendChild(ogTitle);
+    }
+    ogTitle.setAttribute('content', title);
+    
+    let ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+        ogUrl = document.createElement('meta');
+        ogUrl.setAttribute('property', 'og:url');
+        document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute('content', canonicalUrl);
+}
+
+// ─── ADD STRUCTURED DATA (JSON-LD) ───────────────────────────────────────────
+function addStructuredData() {
+    // Remove existing structured data
+    const existingScript = document.querySelector('script[type="application/ld+json"]');
+    if (existingScript) existingScript.remove();
+    
+    const structuredData = {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": safeProductData.productName,
+        "image": safeProductData.mainImage,
+        "description": safeProductData.aboutItem?.join(' ') || '',
+        "sku": safeProductData.currentSku,
+        "mpn": safeProductData.productStrId,
+        "brand": {
+            "@type": "Brand",
+            "name": safeProductData.brandName
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": window.location.href,
+            "priceCurrency": "INR",
+            "price": safeProductData.currentSellingPrice,
+            "priceValidUntil": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            "availability": safeProductData.currentStock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+            "seller": {
+                "@type": "Organization",
+                "name": "Artezo"
+            }
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.5",
+            "reviewCount": safeProductData.productReviews?.length || 50
+        }
+    };
+    
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+}
+
+
+  //====================================================//
+  //          patch end
+  //====================================================//
+
   // ==================== GET SIMILAR PRODUCTS ====================
   function getSimilarProducts(currentProduct, limit = 4) {
     if (!allProductsArray.length) return [];
@@ -1286,22 +1480,61 @@
     });
 
     // Color buttons
-    document.getElementById("variantSection").addEventListener("click", (e) => {
-      const btn = e.target.closest(".color-variant");
-      if (!btn) return;
+    // Color buttons - REPLACE the existing click handler with this:
+document.getElementById("variantSection").addEventListener("click", (e) => {
+    const btn = e.target.closest(".color-variant");
+    if (!btn) return;
 
-      document
+    document
         .querySelectorAll(".color-variant")
         .forEach((b) =>
-          b.classList.remove("ring-2", "ring-[#E6A62C]", "ring-offset-2"),
+            b.classList.remove("ring-2", "ring-[#E6A62C]", "ring-offset-2"),
         );
-      btn.classList.add("ring-2", "ring-[#E6A62C]", "ring-offset-2");
+    btn.classList.add("ring-2", "ring-[#E6A62C]", "ring-offset-2");
 
-      // Update main product info
-      document.getElementById("mainProductImage").src = btn.dataset.image;
-      document.querySelector(".price-display").textContent =
+    // Update main product info
+    document.getElementById("mainProductImage").src = btn.dataset.image;
+    document.querySelector(".price-display").textContent =
         `₹${parseInt(btn.dataset.price).toLocaleString()}`;
+    
+    // ─── ADD THIS BLOCK - Update currentVariant when color clicked ───
+    const variantId = btn.dataset.variantId;
+    const newVariant = safeProductData.availableVariants?.find(v => v.variantId === variantId);
+    if (newVariant) {
+        currentVariant = newVariant;
+        // URL will be updated via updateProductDisplay() call below
+    }
+    // ─────────────────────────────────────────────────────────────────
+});
+
+// Also update the size button click handler to find the first available color
+// for that size and update currentVariant:
+sizeButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        sizeButtons.forEach((b) =>
+            b.classList.remove(
+                "border-[#E6A62C]",
+                "bg-[#fff9ef]",
+                "text-[#033E59]",
+            ),
+        );
+        btn.classList.add("border-[#E6A62C]", "bg-[#fff9ef]", "text-[#033E59]");
+
+        filterColorsBySize(btn.dataset.size);
+        
+        // ─── ADD THIS - Find first visible color and update currentVariant ───
+        const firstVisibleColor = document.querySelector('.color-variant[style*="display: block"], .color-variant:not([style*="display: none"])');
+        if (firstVisibleColor) {
+            const variantId = firstVisibleColor.dataset.variantId;
+            const newVariant = safeProductData.availableVariants?.find(v => v.variantId === variantId);
+            if (newVariant) {
+                currentVariant = newVariant;
+                rewriteURLToSEO(currentVariant.sku || currentVariant.variantId);
+            }
+        }
+        // ────────────────────────────────────────────────────────────────────
     });
+});
 
     // Initialize with first size
     if (sizeButtons.length > 0) {
@@ -1309,22 +1542,54 @@
     }
   }
 
-  function updateProductDisplay() {
+//   function updateProductDisplay() {
+//     const mainImage = document.getElementById("mainProductImage");
+//     if (mainImage && currentVariant?.mainImage)
+//       mainImage.src = currentVariant.mainImage;
+//     const priceElement = document.querySelector(
+//       ".text-3xl.font-bold, .price-display",
+//     );
+//     const mrpElement = document.querySelector(".line-through");
+//     if (priceElement && currentVariant)
+//       priceElement.textContent = `₹${currentVariant.price}`;
+//     if (mrpElement && currentVariant)
+//       mrpElement.textContent = `₹${currentVariant.mrp}`;
+//     const stockInfo = document.getElementById("stockInfo");
+//     if (stockInfo && currentVariant)
+//       stockInfo.textContent = `Only ${currentVariant.stock} items left in stock`;
+
+//     // Add at the end of updateProductDisplay() function
+// if (safeProductData && currentVariant) {
+//     const variantSku = currentVariant.sku || currentVariant.variantId || null;
+//     rewriteURLToSEO(variantSku);
+// }
+//   }
+
+// Find this function in your current file and REPLACE with this:
+
+function updateProductDisplay() {
     const mainImage = document.getElementById("mainProductImage");
     if (mainImage && currentVariant?.mainImage)
-      mainImage.src = currentVariant.mainImage;
+        mainImage.src = currentVariant.mainImage;
     const priceElement = document.querySelector(
-      ".text-3xl.font-bold, .price-display",
+        ".text-3xl.font-bold, .price-display",
     );
     const mrpElement = document.querySelector(".line-through");
     if (priceElement && currentVariant)
-      priceElement.textContent = `₹${currentVariant.price}`;
+        priceElement.textContent = `₹${currentVariant.price}`;
     if (mrpElement && currentVariant)
-      mrpElement.textContent = `₹${currentVariant.mrp}`;
+        mrpElement.textContent = `₹${currentVariant.mrp}`;
     const stockInfo = document.getElementById("stockInfo");
     if (stockInfo && currentVariant)
-      stockInfo.textContent = `Only ${currentVariant.stock} items left in stock`;
-  }
+        stockInfo.textContent = `Only ${currentVariant.stock} items left in stock`;
+    
+    // ─── ADD THIS BLOCK - UPDATE URL WITH VARIANT SKU ───
+    if (safeProductData && currentVariant) {
+        const variantSku = currentVariant.sku || currentVariant.variantId || null;
+        rewriteURLToSEO(variantSku);
+    }
+    // ─────────────────────────────────────────────────
+}
 
   function applyCoupon(couponCode) {
     const coupon = safeProductData.availabeCoupons?.find(
@@ -2472,6 +2737,11 @@ bg-gray-100 px-2 py-0.5 rounded-md">
         safeProductData.hero_banners,
       );
 
+      // Add after safeProductData is defined
+      const seoParams = getSEOParameters();
+      updateSEOMetaTags(safeProductData, seoParams);
+      addStructuredData();
+
       currentVariant = safeProductData.availableVariants?.[0] || null;
 
       buildCompleteHTML();
@@ -2486,6 +2756,9 @@ bg-gray-100 px-2 py-0.5 rounded-md">
 
       setTimeout(() => {
         setupDynamicVariants(); //#patch 3 - Setup variant selection logic after HTML is rendered
+        const initialVariantSku = safeProductData.availableVariants?.[0]?.sku || null;
+        rewriteURLToSEO(initialVariantSku);
+
         document
           .querySelectorAll(".add-to-cart-btn")
           .forEach((btn) => btn.addEventListener("click", handleAddToCart));
