@@ -23,8 +23,8 @@ const categoryData = {
       categoryId: 1,
       productCategory: "Wall Decor",
       categoryPath: [],
-      productCategoryRedirect: "../HomeCategory/homecategory.html",
-      categoryPathRedirect: "../HomeSub/homesubcategory.html",
+      productCategoryRedirect: "/HomeCategory/homecategory.html",
+      categoryPathRedirect: "/HomeSub/homesubcategory.html",
       trendingMark: false,
     },
     {

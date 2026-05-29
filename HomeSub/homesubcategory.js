@@ -329,7 +329,7 @@
     }
 
     if (!currentCustomizingProduct.isCustomizable) {
-      window.location.href = `../Product-Details/product-detail.html?id=${productId}`;
+      window.location.href = `/products/product-detail.html?id=${productId}`;
       return;
     }
 
@@ -601,7 +601,7 @@
 
     if (result && result.success) {
       setTimeout(
-        () => (window.location.href = "../Checkout/checkout.html"),
+        () => (window.location.href = "/Checkout/checkout.html"),
         300,
       );
     } else {
@@ -658,11 +658,11 @@
       const productSlug  = slugify(cleanName || productData.productName);
       const sku          = productData.currentSku || `PROD-${pid}`;
 
-      const url = `../Product-Details/product-detail.html?id=${pid}&sku=${sku}&brand=${brandSlug}&category=${categorySlug}&product=${productSlug}`;
+      const url = `/products/product-detail.html?id=${pid}&sku=${sku}&brand=${brandSlug}&category=${categorySlug}&product=${productSlug}`;
       console.log("[HomeSubcategory] navigating to:", url);
       window.location.href = url;
     } else {
-      window.location.href = `../Product-Details/product-detail.html?id=${pid}`;
+      window.location.href = `/products/product-detail.html?id=${pid}`;
     }
   }
 
