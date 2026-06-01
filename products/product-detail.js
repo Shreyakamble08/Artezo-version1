@@ -625,43 +625,43 @@ function addStructuredData() {
             </div>
 
             <!-- WhatsApp Number Section -->
-<div class="bg-white border border-[#e5e7eb] rounded-xl p-5 shadow-sm">
+      <div class="bg-white border border-[#e5e7eb] rounded-xl p-5 shadow-sm">
 
-  <div class="flex items-start gap-4">
+        <div class="flex items-start gap-4">
 
-    <!-- WhatsApp Icon -->
-    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-      <i class="fab fa-whatsapp text-2xl text-green-600"></i>
-    </div>
+          <!-- WhatsApp Icon -->
+          <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fab fa-whatsapp text-2xl text-green-600"></i>
+          </div>
 
-    <div class="flex-1">
+          <div class="flex-1">
 
-      <h4 class="font-semibold text-gray-900">
-        WhatsApp Number
-      </h4>
+            <h4 class="font-semibold text-gray-900">
+              WhatsApp Number
+            </h4>
 
-      <p class="text-sm text-gray-500 mt-1">
-        Enter your WhatsApp number so we can send you the preview of your customized design.
-      </p>
+            <p class="text-sm text-gray-500 mt-1">
+              Enter your WhatsApp number so we can send you the preview of your customized design.
+            </p>
 
-      <!-- Input Field -->
-      <div class="mt-4 flex items-center border border-[#e5e7eb] rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-green-500">
+            <!-- Input Field -->
+            <div class="mt-4 flex items-center border border-[#e5e7eb] rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-green-500">
 
-        <!-- Country Code -->
-        <span class="px-3 bg-gray-50 text-gray-600 text-sm border-r">
-          +91
-        </span>
+              <!-- Country Code -->
+              <span class="px-3 bg-gray-50 text-gray-600 text-sm border-r">
+                +91
+              </span>
 
-        <!-- Number Input -->
-        <input
-          type="tel"
-          id="customerWhatsappNumber"
-          placeholder="Enter your WhatsApp number"
-          maxlength="10"
-          class="w-full px-3 py-2 outline-none text-sm"
-        />
+              <!-- Number Input -->
+              <input
+                type="tel"
+                id="customerWhatsappNumber"
+                placeholder="Enter your WhatsApp number"
+                maxlength="10"
+                class="w-full px-3 py-2 outline-none text-sm"
+              />
 
-      </div>
+            </div>
 
       <!-- Helper Text -->
       <p class="text-xs text-gray-400 mt-2">
@@ -671,7 +671,13 @@ function addStructuredData() {
     </div>
 
   </div>
-
+</div>
+<!-- Note Section -->
+<div class="bg-orange-50 border border-orange-200 rounded-lg p-3 flex gap-3">
+  <i class="fas fa-exclamation-circle text-orange-600 mt-0.5"></i>
+  <p class="text-xs text-gray-700 leading-relaxed">
+    <span class="font-semibold">Important:</span> Customized products cannot be returned or exchanged after confirmation. A design preview will be shared on WhatsApp for approval before production.
+  </p>
 </div>
 
           </div>
