@@ -199,7 +199,7 @@ const ProductDatabase = {
   // ========== WALL CLOCKS (IDs: 101-110) ==========
  wallClock1: {
     productId: 101,
-    productName: "Rustic Wooden Effect Wall Clock",
+    productName: "Chhatrapati Shivaji Maharaj Portrait Framed Wall Art | Religious Print & Historical Wall Decor for Living Room | Office & Home (Size 14 x 20 Inches)",
     brandName: "Artezo",
     currentSku: "WC-101-BRN-L",
     selectedColor: "Brown",
@@ -207,11 +207,11 @@ const ProductDatabase = {
     currentMrpPrice: 2499,
     currentStock: 45,
     mainImage:
-      "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
+      "https://m.media-amazon.com/images/I/818njH7d3AL._SX522_.jpg",
     mockupImages: [
-      "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
-      "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
-      "https://i.etsystatic.com/18909544/r/il/4d908c/7682769240/il_1588xN.7682769240_b8zb.jpg",
+      "https://m.media-amazon.com/images/I/71TP-E2GXGL._SX522_.jpg",
+      "https://m.media-amazon.com/images/I/81rBGvDALuL._SX522_.jpg",
+      "https://m.media-amazon.com/images/I/71wZxZbhm5L._SX522_.jpg",
     ],
     hero_banners: [
       {
@@ -229,10 +229,10 @@ const ProductDatabase = {
         price: 999,
         mrp: 1899,
         stock: 25,
-        mainImage: "https://cdn.shopify.com/s/files/1/0632/2526/6422/products/wall-clock-clay-play-wall-clock-1.jpg?v=1776767439&width=1728",
-        size: "12 inch",
-        sizes: ["12 inch"],
-        titleName: "Natural Brown - 12 inch"
+        mainImage: "https://m.media-amazon.com/images/I/818njH7d3AL._SX522_.jpg",
+        size: "20 X 14 inch",
+        sizes: ["20 X 14 inch"],
+        titleName: "Natural Brown - 20 X 14 inch"
       },
       {
         variantId: "WC-101-S-BLK",
@@ -241,7 +241,7 @@ const ProductDatabase = {
         price: 1099,
         mrp: 1999,
         stock: 18,
-        mainImage: "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQQfqvMxpKgtsZCylI4jx0i3sPhutPUd8_USZ3XzoGgPTiSOx2CRMM_uB1vjusIqydFvH1zVXWN4BjSSPXZjKy3ss6ZHQGMycDHdzmhM9w&usqp=CAc",
+        mainImage: "https://m.media-amazon.com/images/I/818njH7d3AL._SX522_.jpg",
         size: "12 inch",
         sizes: ["12 inch"],
         titleName: "Matte Black - 12 inch"

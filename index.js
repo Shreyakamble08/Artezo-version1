@@ -86,86 +86,395 @@
             </div>
           </section>
 
-          <!-- Discover Section -->
-         <section class="py-12 px-3 sm:px-6 lg:px-8 bg-white">
-  <div class="max-w-[1450px] mx-auto bg-teal-50 rounded-xl p-6 sm:p-8 -mt-6 md:-mt-4">
-   
+          <!-- Discover Section - 5th june changes -->
+        <section class="py-12 px-3 sm:px-6 lg:px-8 bg-white">
+  <div class="max-w-[1450px] mx-auto bg-teal-50 rounded-xl p-4 sm:p-6 -mt-6 md:-mt-4">
+
+    <!-- Heading -->
     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+
       <div>
-        <h2 class="text-3xl md:text-4xl font-semibold text-[#1D3C4A] font-zain">${data.discover.title}</h2>
-        <p class="text-sm text-gray-500">${data.discover.subtitle}</p>
+        <div class="flex items-center gap-3 mb-1">
+          <span class="w-1 h-8 bg-[#E39F32] rounded-full"></span>
+
+          <h2 class="text-2xl sm:text-3xl font-semibold text-[#1D3C4A] font-zain">
+            ${data.discover.title}
+          </h2>
+        </div>
+
+        <p class="text-sm text-gray-500 ml-4">
+          ${data.discover.subtitle}
+        </p>
       </div>
-      <button class="flex items-center gap-2 border border-gray-300 px-5 py-2.5 rounded-full text-sm hover:bg-white transition w-fit view-all-btn">
+
+      <!-- <button
+        class="flex items-center gap-2 border border-gray-300 px-5 py-2.5 rounded-full text-sm hover:bg-white transition w-fit view-all-btn">
         View All
         <i class="fa-solid fa-arrow-right text-xs"></i>
-      </button>
+      </button>-->
     </div>
 
     <div class="relative">
-      <!-- Previous Button - Slightly outside -->
-      <button id="discoverPrevBtn" 
+
+      <!-- Previous -->
+      <button
+        id="discoverPrevBtn"
         class="absolute -left-2 sm:-left-5 md:-left-6 top-1/2 -translate-y-1/2 bg-white shadow-lg p-3 rounded-full z-30 hover:scale-105 active:scale-95 transition flex items-center justify-center border border-gray-100">
         <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
       </button>
 
       <!-- Slider -->
-      <div id="discoverSlider" 
-        class="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 px-8 sm:px-12 md:px-10 snap-x snap-mandatory scrollbar-hide">
-        
+      <div
+        id="discoverSlider"
+        class="flex gap-3 sm:gap-5 overflow-x-auto scroll-smooth no-scrollbar pb-4 px-2 sm:px-10 md:px-10 snap-x snap-mandatory scrollbar-hide">
+
         ${data.discover.products
         .map(
           (prod) => `
-          <div class="min-w-[85%] sm:min-w-[47%] md:min-w-[31%] lg:min-w-[280px] xl:min-w-[300px] 
-                      bg-white rounded-xl shadow-sm p-1 hover:shadow-md transition snap-start flex-shrink-0">
-           
-            <!-- IMAGE + WISHLIST -->
-            <div class="relative">
-              <img src="${prod.image}" 
-                   class="rounded-lg h-[200px] sm:h-[220px] w-full object-cover" 
-                   alt="${prod.title}" />
-              
-              <!-- Wishlist Button -->
-              <button
-                class="wishlist-btn absolute top-3 right-3 bg-white rounded-full w-9 h-9 flex items-center justify-center shadow hover:bg-gray-50 transition"
-                data-product-id="${prod.id}"
-                data-product-name="${prod.title}"
-                data-price="${prod.price}"
-                data-image="${prod.image}"
-              >
-                <i class="fa-regular fa-heart text-gray-500 hover:text-red-500 transition"></i>
-              </button>
-            </div>
 
-            <div class="px-3 py-3">
-              <p class="text-sm text-gray-700 line-clamp-2 font-normal leading-tight">${prod.title}</p>
-              
-              <div class="flex text-orange-400 text-sm mt-2">
-                ${prod.starsHtml}
-                <span class="text-gray-500 ml-2 text-xs">(${prod.reviews})</span>
-              </div>
+        <div class="relative
+                    min-w-[48%]
+                    sm:min-w-[48%]
+                    md:min-w-[31%]
+                    lg:min-w-[250px]
+                    xl:min-w-[270px]
+                    bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex-shrink-0 snap-start">
 
-              <div class="flex items-center gap-2 mt-2">
-                <span class="text-lg font-semibold text-[#1D3C4A]">${prod.price}</span>
-                <span class="text-sm line-through text-gray-400">${prod.originalPrice}</span>
-                <span class="text-green-600 text-sm font-medium">${prod.discount}</span>
-              </div>
+          <!-- Discount Badge -->
+          <span class="absolute top-3 left-3 bg-[#E39F32] text-white text-[10px] font-semibold px-2 py-1 rounded-md z-20">
+            ${prod.discount}
+          </span>
+
+          <!-- Wishlist -->
+          <button
+            class="wishlist-btn absolute top-3 right-3 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:scale-110 transition z-20"
+            data-product-id="${prod.id}"
+            data-product-name="${prod.title}"
+            data-price="${prod.price}"
+            data-image="${prod.image}"
+          >
+            <i class="fa-regular fa-heart text-gray-500 text-sm"></i>
+          </button>
+
+          <!-- Product Image -->
+          <div class="p-1.5">
+            <div class="border border-gray-200 rounded-xl overflow-hidden h-[120px] sm:h-[150px] bg-gray-100">
+              <img
+                src="${prod.image}"
+                class="w-full h-full object-cover"
+                alt="${prod.title}"
+              />
             </div>
           </div>
+
+          <!-- Content -->
+          <div class="px-2.5 pb-2 pt-1">
+
+            <h3 class="text-sm text-gray-700 line-clamp-2 font-medium leading-tight min-h-[20px]">
+              ${prod.title}
+            </h3>
+
+            <!-- Rating -->
+            <div class="flex items-center text-orange-500 text-xs mt-1">
+              ${prod.starsHtml}
+              <span class="text-gray-400 ml-1">
+                (${prod.reviews})
+              </span>
+            </div>
+
+            <!-- Price -->
+            <div class="flex items-center gap-1 mt-1 flex-wrap">
+              <span class="font-semibold text-base text-[#1D3C4A]">
+                ${prod.price}
+              </span>
+
+              <span class="text-gray-400 line-through text-xs">
+                ${prod.originalPrice}
+              </span>
+            </div>
+
+            <!-- Add To Cart -->
+              <button
+              class="group w-full mt-2 bg-[#1D3C4A] text-white py-2.5 rounded-lg flex items-center justify-center gap-2 text-xs font-medium hover:bg-[#E39F32] transition-all duration-300"
+      data-product-id="${prod.id}"
+    >
+      <i class="fa-solid fa-cart-shopping text-[#E39F32] group-hover:text-[#1D3C4A] transition-colors duration-300"></i>
+      <span class="text-white">Add to Cart</span>
+    </button>
+
+          </div>
+
+        </div>
+
         `,
         )
         .join("")}
+
       </div>
 
-      <!-- Next Button - Slightly outside -->
-      <button id="discoverNextBtn" 
+      <!-- Next -->
+      <button
+        id="discoverNextBtn"
         class="absolute -right-2 sm:-right-5 md:-right-6 top-1/2 -translate-y-1/2 bg-white shadow-lg p-3 rounded-full z-30 hover:scale-105 active:scale-95 transition flex items-center justify-center border border-gray-100">
         <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
       </button>
+
     </div>
+
   </div>
 </section>
 
-          <!-- DEAL SECTION (grid) -->
+
+    <!-- Top Rated / Best Sellers Section - 5th june changes -->
+        <section class="top-rated-section py-8 bg-gray-50">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="flex items-center justify-between mb-6">
+                  <div> <!--5th june changes --->
+          <div class="flex items-center gap-3 mb-1">
+            <span class="w-1 h-8 bg-[#E39F32] rounded-full"></span>
+
+            <h2 class="text-2xl sm:text-4xl font-semibold text-[#1D3C4A] font-zain">
+              Best Sellers
+            </h2>
+          </div>
+
+          <p class="text-gray-500 text-sm ml-4">
+            Our most loved pieces chosen by customers
+          </p>
+        </div>
+
+              <!----<button class="border border-gray-300 px-5 py-2 rounded-full text-xs sm:text-sm hover:bg-white transition view-all-btn flex items-center gap-2">
+                View All
+                <span class="text-base leading-none">→</span>
+              </button>--->
+            </div>
+
+            <div class="relative">
+
+              <!-- PREV BUTTON -->
+              <button
+                id="topRatedPrevBtn"
+                class="absolute -left-2 sm:-left-5 md:-left-6 top-1/2 -translate-y-1/2 bg-white shadow-lg p-3 rounded-full z-30 hover:scale-105 active:scale-95 transition flex items-center justify-center border border-gray-100">
+                <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
+              </button>
+
+              <!-- SLIDER - 5th june changes  --> 
+            <div
+          id="topRatedSlider"
+          class="flex gap-3 sm:gap-5 overflow-x-auto scroll-smooth no-scrollbar pb-4 px-2 sm:px-10 md:px-12 snap-x snap-mandatory scrollbar-hide">
+
+              ${data.topRated
+        .map(
+          (prod) => `
+
+        <div class="relative min-w-[48%] sm:min-w-[48%] md:min-w-[32%] lg:min-w-[250px] xl:min-w-[270px]
+                    bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex-shrink-0 snap-start">
+
+          <!-- Discount Badge -->
+          <span class="absolute top-3 left-3 bg-[#E39F32] text-white text-[10px] font-semibold px-2 py-1 rounded-md z-20">
+            ${prod.discount}
+          </span>
+
+          <!-- Wishlist Button -->
+          <button 
+            class="wishlist-btn absolute top-3 right-3 bg-white/90 backdrop-blur rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:scale-110 transition z-20"
+            data-product-id="${prod.id}"
+            data-product-name="${prod.title}"
+            data-price="${prod.price}"
+            data-image="${prod.image}"
+          >
+            <i class="fa-regular fa-heart text-gray-500 text-sm"></i>
+          </button>
+
+          <!-- Product Image -->
+          <div class="p-1.5">
+            <div class="border border-gray-200 rounded-xl overflow-hidden h-[150px] sm:h-[180px] bg-gray-100">
+              <img
+                src="${prod.image}"
+                class="w-full h-full object-cover"
+                alt="${prod.title}"
+              />
+            </div>
+          </div>
+
+          <!-- Product Details -->
+          <div class="px-2.5 pb-2 pt-1">
+
+          <h3 class="text-sm text-gray-700 line-clamp-2 font-medium leading-tight min-h-[20px]">
+              ${prod.title}
+            </h3>
+
+            <!-- Rating -->
+            <div class="flex items-center text-orange-500 text-xs mt-1.5">
+              ${prod.starsHtml}
+              <span class="text-gray-400 ml-1">
+                (${prod.reviews})
+              </span>
+            </div>
+
+            <!-- Price -->
+            <div class="mt-1">
+              <div class="flex items-center gap-1 flex-wrap">
+                <span class="font-semibold text-base text-[#1D3C4A]">
+                  ${prod.price}
+                </span>
+
+                <span class="text-gray-400 line-through text-xs">
+                  ${prod.originalPrice}
+                </span>
+              </div>
+            </div>
+
+            <!-- Add To Cart Button -->
+          <button
+          class="group w-full mt-2 bg-[#1D3C4A] text-white py-2.5 rounded-lg flex items-center justify-center gap-2 text-xs font-medium hover:bg-[#E39F32] transition-all duration-300"
+          data-product-id="${prod.id}"
+        >
+          <i class="fa-solid fa-cart-shopping text-[#E39F32] group-hover:text-[#1D3C4A] transition-colors duration-300"></i>
+          <span class="text-white">Add to Cart</span>
+        </button>
+
+          </div>
+
+        </div>
+
+        `,
+        )
+        .join("")}
+              </div>
+
+              <!-- NEXT BUTTON -->
+              <button
+                id="topRatedNextBtn"
+                class="absolute -right-2 sm:-right-5 md:-right-6 top-1/2 -translate-y-1/2 bg-white shadow-lg p-3 rounded-full z-30 hover:scale-105 active:scale-95 transition flex items-center justify-center border border-gray-100">
+                <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
+              </button>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Photo Frames Section - 5th june changes -->
+       <section class="py-6 sm:py-7 md:py-8 px-3 sm:px-5 lg:px-8 mt-1">
+  <div class="mx-auto max-w-[1450px] w-full bg-gradient-to-br from-teal-50 via-white to-teal-100 rounded-lg border border-teal-100/70 shadow-sm sm:shadow p-4 sm:p-5 md:p-6 lg:p-7">
+
+    <!-- Heading -->
+    <div class="mb-6">
+      <div class="flex items-center gap-3 mb-1">
+        <span class="w-1 h-8 bg-[#E39F32] rounded-full"></span>
+
+        <h2 class="text-2xl sm:text-3xl font-semibold text-[#1D3C4A] font-zain">
+          Photo Frames
+        </h2>
+      </div>
+
+      <p class="text-gray-500 text-sm ml-4">
+        Capture and frame your beautiful memories
+      </p>
+    </div>
+
+    <div class="relative">
+
+      <!-- LEFT BUTTON -->
+      <button
+        id="pfLeft"
+        class="absolute -left-2 sm:-left-5 md:-left-6 top-1/2 -translate-y-1/2 bg-white shadow-lg p-3 rounded-full z-30 hover:scale-105 active:scale-95 transition flex items-center justify-center border border-gray-100">
+        <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
+      </button>
+
+      <!-- PRODUCTS -->
+      <div
+        id="photoFramesContainer"
+        class="flex gap-3 sm:gap-5 overflow-x-auto scroll-smooth no-scrollbar pb-4 px-2 sm:px-4 snap-x snap-mandatory scrollbar-hide">
+
+        ${data.photoFrames
+        .map(
+          (frame) => `
+
+<div class="relative
+            w-[170px]
+            sm:w-[220px]
+            md:w-[250px]
+            lg:w-[250px]
+            xl:w-[270px]
+            flex-shrink-0
+            bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 snap-start overflow-hidden">
+
+          <!-- Discount Badge -->
+          <span class="absolute top-3 left-3 bg-[#E39F32] text-white text-[10px] font-semibold px-2 py-1 rounded-md z-20">
+            ${frame.discount}% OFF
+          </span>
+
+          <!-- Wishlist -->
+          <button
+            class="absolute top-3 right-3 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:scale-110 transition z-20">
+            <i class="fa-regular fa-heart text-gray-500 text-sm"></i>
+          </button>
+
+          <!-- Product Image -->
+         <div class="p-1.5">
+  <div class="w-full h-[130px] sm:h-[150px] border border-gray-200 rounded-xl overflow-hidden bg-gray-100">
+    <img
+      src="${frame.image}"
+      alt="${frame.title}"
+      class="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
+    />
+  </div>
+</div>
+
+          <!-- Product Details -->
+          <div class="px-2.5 pb-2 pt-1 flex flex-col h-[140px]">
+
+            <p class="text-[10px] uppercase tracking-wide text-gray-500 mb-1">
+              ${frame.category}
+            </p>
+
+            <h3 class="text-sm text-gray-700 line-clamp-2 font-medium leading-tight min-h-[20px]">
+              ${frame.title}
+            </h3>
+
+            <div class="flex items-center gap-1 mt-1 flex-wrap">
+              <span class="font-semibold text-base text-[#1D3C4A]">
+                ${frame.price}
+              </span>
+
+              <span class="text-gray-400 line-through text-xs">
+                ${frame.originalPrice}
+              </span>
+            </div>
+
+            <!-- Add To Cart -->
+<button
+  class="group/cart w-full mt-auto bg-[#1D3C4A] text-white py-2.5 rounded-lg flex items-center justify-center gap-2 text-xs font-medium hover:bg-[#E39F32] hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+>
+  <i class="fa-solid fa-cart-shopping text-[#E39F32] group-hover/cart:text-[#1D3C4A] transition-all duration-300"></i>
+  <span class="text-white">Add to Cart</span>
+</button> 
+
+          </div>
+
+        </div>
+
+        `,
+        )
+        .join("")}
+
+      </div>
+
+      <!-- RIGHT BUTTON -->
+      <button
+        id="pfRight"
+        class="absolute -right-2 sm:-right-5 md:-right-6 top-1/2 -translate-y-1/2 bg-white shadow-lg p-3 rounded-full z-30 hover:scale-105 active:scale-95 transition flex items-center justify-center border border-gray-100">
+        <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
+      </button>
+
+    </div>
+
+  </div>
+</section>
+
+         <!-- DEAL SECTION (grid) 
           <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-12 -mt-6">
             <div class="bg-[#efe3e1] rounded-lg p-6 sm:p-8">
               <div class="grid grid-cols-12 gap-6">
@@ -197,101 +506,8 @@
         .join("")}
               </div>
             </div>
-          </section>
+          </section> -->
 
-    <!-- Top Rated / Best Sellers Section -->
-<section class="top-rated-section py-8 bg-gray-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-    <div class="flex items-center justify-between mb-6">
-      <div>
-        <h2 class="text-2xl sm:text-3xl font-semibold text-[#1D3C4A] font-zain">
-          Best Sellers
-        </h2>
-        <p class="text-gray-500 text-sm">
-          Our most loved pieces chosen by customers
-        </p>
-      </div>
-
-      <!----<button class="border border-gray-300 px-5 py-2 rounded-full text-xs sm:text-sm hover:bg-white transition view-all-btn flex items-center gap-2">
-        View All
-        <span class="text-base leading-none">→</span>
-      </button>--->
-    </div>
-
-    <div class="relative">
-
-      <!-- PREV BUTTON -->
-      <button
-        id="topRatedPrevBtn"
-        class="absolute -left-2 sm:-left-5 md:-left-6 top-1/2 -translate-y-1/2 bg-white shadow-lg p-3 rounded-full z-30 hover:scale-105 active:scale-95 transition flex items-center justify-center border border-gray-100">
-        <i class="fa-solid fa-chevron-left text-sm sm:text-base"></i>
-      </button>
-
-      <!-- SLIDER -->
-      <div
-        id="topRatedSlider"
-        class="flex gap-4 sm:gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4 px-10 sm:px-14 md:px-12 snap-x snap-mandatory scrollbar-hide">
-
-        ${data.topRated
-        .map(
-          (prod) => `
-        
-        <div class="relative min-w-[86%] sm:min-w-[48%] md:min-w-[32%] lg:min-w-[260px] xl:min-w-[280px] 
-                    bg-white rounded-xl shadow-sm hover:shadow-md transition flex-shrink-0 snap-start">
-
-          <!-- WISHLIST BUTTON -->
-          <button 
-            class="wishlist-btn absolute top-3 right-3 bg-white/90 backdrop-blur rounded-full w-9 h-9 flex items-center justify-center shadow-md hover:scale-110 transition z-20"
-            data-product-id="${prod.id}"
-            data-product-name="${prod.title}"
-            data-price="${prod.price}"
-            data-image="${prod.image}"
-          >
-            <i class="fa-regular fa-heart text-gray-500"></i>
-          </button>
-
-          <div class="p-1">
-            <div class="border border-gray-200 rounded-xl overflow-hidden h-[200px] sm:h-[210px] bg-gray-100">
-              <img src="${prod.image}" 
-                   class="w-full h-full object-cover" 
-                   alt="${prod.title}" />
-            </div>
-          </div>
-
-          <div class="px-3 pb-4 pt-2">
-            <h3 class="text-sm text-gray-700 line-clamp-2 font-medium leading-tight">${prod.title}</h3>
-
-            <div class="flex text-orange-500 text-sm mt-2">
-              ${prod.starsHtml}
-              <span class="text-gray-400 ml-1.5">(${prod.reviews})</span>
-            </div>
-
-            <div class="flex items-center gap-2 mt-2">
-              <span class="font-semibold text-lg text-[#1D3C4A]">${prod.price}</span>
-              <span class="text-gray-400 line-through text-sm">${prod.originalPrice}</span>
-              <span class="text-green-600 text-sm font-medium">${prod.discount}</span>
-            </div>
-          </div>
-
-        </div>
-
-        `,
-        )
-        .join("")}
-
-      </div>
-
-      <!-- NEXT BUTTON -->
-      <button
-        id="topRatedNextBtn"
-        class="absolute -right-2 sm:-right-5 md:-right-6 top-1/2 -translate-y-1/2 bg-white shadow-lg p-3 rounded-full z-30 hover:scale-105 active:scale-95 transition flex items-center justify-center border border-gray-100">
-        <i class="fa-solid fa-chevron-right text-sm sm:text-base"></i>
-      </button>
-
-    </div>
-  </div>
-</section>
 
           <!-- Banner Section (Corporate Gifting) -->
           <section class="py-8 px-4 sm:px-6 lg:px-8">
@@ -395,9 +611,30 @@
   </div>
 
 </section>
+        
+          <!-- DEALS BANNER - 5th june changes -->
+<section class="pt-6 pb-3 px-3 sm:px-5 lg:px-8">
+  <div class="max-w-[1450px] mx-auto w-full">
+    
+    <a href="/deals" class="block">
+      
+      <div class="w-full rounded-lg overflow-hidden">
+        
+        <img 
+          src="${data.dealsBannerImage}" 
+          alt="Deals Banner"
+          class="block w-full h-auto object-cover object-center transition-transform duration-500 hover:scale-105"
+        >
+      
+      </div>
 
-          <!-- Services Section -->
-          <section class="py-6 sm:py-8 md:py-10 px-4 sm:px-6 lg:px-8 mt-2 sm:mt-4 md:mt-6 bg-[url('./Images/servicebg.jfif')] bg-cover bg-center bg-no-repeat bg-fixed">
+    </a>
+
+  </div>
+</section>
+
+ <!-- Services Section -->
+          <section class="py-6 sm:py-8 md:py-10 px-4 sm:px-6 lg:px-8 bg-[url('./Images/servicebg.jfif')] bg-cover bg-center bg-no-repeat bg-fixed">
             <div class="max-w-7xl mx-auto"><div class="rounded-2xl sm:rounded-3xl bg-white/85 backdrop-blur-md shadow-md sm:shadow-lg px-4 sm:px-6 lg:px-8 py-5 sm:py-6 md:py-7"><div class="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">${data.services
         .map(
           (service) => `
@@ -410,116 +647,7 @@
         .join("")}</div></div></div>
           </section>
 
-          <!-- Photo Frames Section -->
-          <section class="py-6 sm:py-7 md:py-8 px-3 sm:px-5 lg:px-8 mt-1">
-  <div class="mx-auto max-w-[1450px] w-full bg-gradient-to-br from-teal-50 via-white to-teal-100 rounded-lg sm:rounded-lg border border-teal-100/70 shadow-sm sm:shadow p-2 sm:p-5 md:p-6 lg:p-7">
-    
-    <div class="mb-3 sm:mb-4 md:mb-5">
-      <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-3.5xl font-semibold font-zain text-[#1D3C4A] tracking-tight">
-        Photo <span class="text-[#e39f32]">Frames</span>
-      </h2>
-      <p class="text-gray-600 text-xs sm:text-sm mt-1">
-        Capture and frame your beautiful memories
-      </p>
-    </div>
 
-    <div class="relative group">
-
-      <!-- LEFT BUTTON -->
-      <button id="pfLeft"
-        class="flex absolute -left-2 xs:-left-3 sm:-left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 bg-white/95 backdrop-blur-sm border border-gray-200 rounded-full shadow-md items-center justify-center text-gray-700 hover:text-white hover:bg-[#1D3C4A] transition-all duration-200 opacity-70 hover:opacity-100 active:scale-95 -translate-x-1/2 sm:translate-x-0">
-        <i class="fa-solid fa-chevron-left text-base sm:text-lg"></i>
-      </button>
-
-      <!-- PRODUCTS -->
-      <div id="photoFramesContainer"
-        class="flex gap-3 xs:gap-4 sm:gap-5 md:gap-6 overflow-x-auto pb-4 sm:pb-5 scroll-smooth snap-x snap-mandatory scrollbar-hide -mx-1 xs:-mx-2 sm:-mx-0 px-1 xs:px-2 sm:px-0">
-
-        ${data.photoFrames
-        .map(
-          (frame) => `
-        
-        <div class="flex-none min-w-[160px] xs:min-w-[170px] sm:min-w-[190px] md:min-w-[210px] lg:min-w-[225px] max-w-[180px] xs:max-w-[195px] sm:max-w-[220px] md:max-w-[240px] bg-white border border-gray-200/80 rounded-xl sm:rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 snap-start">
-
-          <div class="relative aspect-[4/3] overflow-hidden rounded-t-xl bg-gray-50">
-
-            <img src="${frame.image}" 
-            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" 
-            loading="lazy" />
-
-            <button class="absolute top-2 right-2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 backdrop-blur-sm rounded-full shadow flex items-center justify-center text-gray-600 hover:text-red-500">
-              <i class="fa-regular fa-heart text-sm sm:text-base"></i>
-            </button>
-
-          </div>
-
-          <div class="p-2.5 sm:p-3">
-
-            <p class="text-[9px] xs:text-[10px] sm:text-xs text-gray-500 uppercase font-medium mb-1">
-              ${frame.category}
-            </p>
-
-            <h3 class="text-xs sm:text-sm md:text-base font-medium text-[#1D3C4A] mb-1.5 sm:mb-2 line-clamp-2 min-h-[2.6em]">
-              ${frame.title}
-            </h3>
-
-            <div class="flex items-center gap-2 flex-wrap">
-
-              <span class="text-sm sm:text-base md:text-lg  font-bold text-[#1D3C4A]">
-                ${frame.price}
-              </span>
-
-              <span class="text-xs sm:text-sm text-gray-500 line-through">
-                ${frame.originalPrice}
-              </span>
-
-              <span class="text-xs sm:text-sm text-green-600 font-semibold">
-                ${frame.discount}% OFF
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        `,
-        )
-        .join("")}
-
-      </div>
-
-      <!-- RIGHT BUTTON -->
-      <button id="pfRight"
-        class="flex absolute -right-2 xs:-right-3 sm:-right-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 xs:w-9 xs:h-9 sm:w-10 sm:h-10 bg-white/95 backdrop-blur-sm border border-gray-200 rounded-full shadow-md items-center justify-center text-gray-700 hover:text-white hover:bg-[#1D3C4A] transition-all duration-200 opacity-70 hover:opacity-100 active:scale-95 translate-x-1/2 sm:translate-x-0">
-        <i class="fa-solid fa-chevron-right text-base sm:text-lg"></i>
-      </button>
-
-    </div>
-
-  </div>
-</section>
-
-          <!-- DEALS BANNER -->
-<section class="mb-4 py-6 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-7xl mx-auto">
-    
-    <a href="/deals" class="block mb-4 sm:mb-6 lg:mb-8">
-      
-      <div class="w-full rounded-lg overflow-hidden">
-        
-        <img 
-          src="${data.dealsBannerImage}" 
-          alt="Deals Banner"
-          class="w-full h-auto object-cover object-center transition-transform duration-500 hover:scale-105"
-        >
-      
-      </div>
-
-    </a>
-
-  </div>
-</section>
         `;
   }
 

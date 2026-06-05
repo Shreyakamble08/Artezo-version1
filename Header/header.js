@@ -117,7 +117,7 @@ const quickAccessLinks = [
   },
   {
     icon: "fa-box",
-    label: "My Orders",
+    label: "Orders",
     url: "../Myorders/orders.html",
     requiresAuth: true,
     guestUrl: "#",
@@ -131,7 +131,7 @@ const quickAccessLinks = [
   },
   {
     icon: "fa-phone",
-    label: "Contact Us",
+    label: "Contact",
     url: "#",
     onClick: function () {
       window.open("https://wa.me/1234567890", "_blank");
@@ -140,7 +140,7 @@ const quickAccessLinks = [
   },
   {
     icon: "fa-info-circle",
-    label: "About Us",
+    label: "About",
     url: "/about.html",
     onClick: function () {
       return true;
@@ -641,7 +641,7 @@ function renderAccountDropdown() {
         <a href="../Myorders/orders.html"
            class="flex items-center gap-x-4 px-7 py-4 hover:bg-zinc-50 text-sm">
           <i class="fa-solid fa-box w-5 text-gray-400"></i>
-          <span>My Orders</span>
+          <span>Orders</span>
         </a>
 
         <a href="../Wishlist/wishlist.html"

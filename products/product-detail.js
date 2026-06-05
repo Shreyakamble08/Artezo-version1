@@ -167,195 +167,215 @@
     };
   }
 
-
   //=====================================================//
-  //      patch function 
+  //      patch function
   //=====================================================//
 
   // ==================== SEO URL FUNCTIONS - ADD TO YOUR CURRENT FILE ====================
 
-// ─── SLUGIFY HELPER ───────────────────────────────────────────────────────────
-function slugify(text) {
+  // ─── SLUGIFY HELPER ───────────────────────────────────────────────────────────
+  function slugify(text) {
     if (!text) return "product";
     return text
-        .toString()
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w\-]+/g, '')
-        .replace(/\-\-+/g, '-')
-        .replace(/^-+/, '')
-        .replace(/-+$/, '');
-}
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/[^\w\-]+/g, "")
+      .replace(/\-\-+/g, "-")
+      .replace(/^-+/, "")
+      .replace(/-+$/, "");
+  }
 
-// ─── GENERATE SEO URL FOR PRODUCT ────────────────────────────────────────────
-function generateProductSEOUrl(product) {
+  // ─── GENERATE SEO URL FOR PRODUCT ────────────────────────────────────────────
+  function generateProductSEOUrl(product) {
     if (!product) return null;
 
-    const brandSlug    = slugify(product.brandName || "artezo");
+    const brandSlug = slugify(product.brandName || "artezo");
     const categorySlug = slugify(product.productCategory || "products");
 
     let cleanName = product.productName || "product";
-    if (cleanName.toLowerCase().startsWith((product.brandName || "").toLowerCase())) {
-        cleanName = cleanName.substring((product.brandName || "").length).trim();
+    if (
+      cleanName
+        .toLowerCase()
+        .startsWith((product.brandName || "").toLowerCase())
+    ) {
+      cleanName = cleanName.substring((product.brandName || "").length).trim();
     }
     const productSlug = slugify(cleanName || product.productName);
-    const sku         = product.currentSku || `PROD-${product.productPrimeId || product.productId}`;
+    const sku =
+      product.currentSku ||
+      `PROD-${product.productPrimeId || product.productId}`;
 
     // Use file path so it works on Live Server + Hostinger without extra rewrite rules
     return `/Product-Details/product-detail.html?id=${product.productPrimeId || product.productId}&sku=${sku}&brand=${brandSlug}&category=${categorySlug}&product=${productSlug}`;
-}
+  }
 
-// ─── REWRITE URL TO SEO FORMAT ───────────────────────────────────────────────
-function rewriteURLToSEO(variantSku) {
+  // ─── REWRITE URL TO SEO FORMAT ───────────────────────────────────────────────
+  function rewriteURLToSEO(variantSku) {
     if (!safeProductData) return;
 
-    const baseSku = safeProductData.currentSku || `PROD-${safeProductData.productId}`;
+    const baseSku =
+      safeProductData.currentSku || `PROD-${safeProductData.productId}`;
 
     // Keep the REAL file path — no fake /products/ path that breaks refresh
     // and relative links. Only update query params for SEO signals.
     const params = new URLSearchParams({
-        id:      safeProductData.productId,
-        sku:     baseSku,
-        brand:   slugify(safeProductData.brandName),
-        category: slugify(safeProductData.productCategory || "products"),
-        product: slugify(safeProductData.productName),
+      id: safeProductData.productId,
+      sku: baseSku,
+      brand: slugify(safeProductData.brandName),
+      category: slugify(safeProductData.productCategory || "products"),
+      product: slugify(safeProductData.productName),
     });
 
     if (variantSku && variantSku !== `VAR-${safeProductData.productId}`) {
-        params.set("variant", variantSku);
+      params.set("variant", variantSku);
     }
 
     // Result: /Product-Details/product-detail.html?id=1&sku=ART-WPLATE-GLD&brand=artezo&...
     const newURL = `/products/product-detail.html?${params.toString()}`;
-    history.replaceState({ productId: safeProductData.productId }, document.title, newURL);
+    history.replaceState(
+      { productId: safeProductData.productId },
+      document.title,
+      newURL,
+    );
     console.log("[ProductDetail] URL updated to:", newURL);
-}
+  }
 
-// ─── PARSE SEO PARAMETERS FROM URL ───────────────────────────────────────────
-function getSEOParameters() {
+  // ─── PARSE SEO PARAMETERS FROM URL ───────────────────────────────────────────
+  function getSEOParameters() {
     const searchParams = new URLSearchParams(window.location.search);
     return {
-        brand:    searchParams.get('brand'),
-        product:  searchParams.get('product'),
-        sku:      searchParams.get('sku'),
-        variant:  searchParams.get('variant'),
-        category: searchParams.get('category')
+      brand: searchParams.get("brand"),
+      product: searchParams.get("product"),
+      sku: searchParams.get("sku"),
+      variant: searchParams.get("variant"),
+      category: searchParams.get("category"),
     };
-}
+  }
 
-// ─── UPDATE SEO META TAGS ─────────────────────────────────────────────────────
-function updateSEOMetaTags(productData, seoData) {
+  // ─── UPDATE SEO META TAGS ─────────────────────────────────────────────────────
+  function updateSEOMetaTags(productData, seoData) {
     if (!productData) return;
-    
+
     // Build clean title
     let title = `${productData.brandName} ${productData.productName}`;
     if (seoData?.variant) {
-        const variantName = seoData.variant.replace(/-/g, ' ');
-        title += ` - ${variantName}`;
+      const variantName = seoData.variant.replace(/-/g, " ");
+      title += ` - ${variantName}`;
     }
     title += ` | Buy Online at Best Price in India`;
     document.title = title;
-    
+
     // Meta description
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
-        metaDesc = document.createElement('meta');
-        metaDesc.name = 'description';
-        document.head.appendChild(metaDesc);
+      metaDesc = document.createElement("meta");
+      metaDesc.name = "description";
+      document.head.appendChild(metaDesc);
     }
     const price = productData.currentSellingPrice;
-    const discount = productData.currentMrpPrice > price ? 
-        `${Math.round(((productData.currentMrpPrice - price) / productData.currentMrpPrice) * 100)}% off` : '';
+    const discount =
+      productData.currentMrpPrice > price
+        ? `${Math.round(((productData.currentMrpPrice - price) / productData.currentMrpPrice) * 100)}% off`
+        : "";
     metaDesc.content = `Buy ${productData.brandName} ${productData.productName} online at best price. ${discount}. Free shipping. COD available. Shop now!`;
-    
+
     // Meta keywords
     let metaKeywords = document.querySelector('meta[name="keywords"]');
     if (!metaKeywords) {
-        metaKeywords = document.createElement('meta');
-        metaKeywords.name = 'keywords';
-        document.head.appendChild(metaKeywords);
+      metaKeywords = document.createElement("meta");
+      metaKeywords.name = "keywords";
+      document.head.appendChild(metaKeywords);
     }
     const keywords = [
-        productData.brandName,
-        productData.productName,
-        productData.productCategory,
-        productData.productSubCategory,
-        ...(productData.globalTags || [])
-    ].filter(Boolean).join(', ');
+      productData.brandName,
+      productData.productName,
+      productData.productCategory,
+      productData.productSubCategory,
+      ...(productData.globalTags || []),
+    ]
+      .filter(Boolean)
+      .join(", ");
     metaKeywords.content = keywords;
-    
+
     // Canonical URL
     let canonical = document.querySelector('link[rel="canonical"]');
     if (!canonical) {
-        canonical = document.createElement('link');
-        canonical.rel = 'canonical';
-        document.head.appendChild(canonical);
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
     }
     const canonicalUrl = `${window.location.origin}${window.location.pathname}?id=${productData.productId}`;
     canonical.href = canonicalUrl;
-    
+
     // Open Graph tags
     let ogTitle = document.querySelector('meta[property="og:title"]');
     if (!ogTitle) {
-        ogTitle = document.createElement('meta');
-        ogTitle.setAttribute('property', 'og:title');
-        document.head.appendChild(ogTitle);
+      ogTitle = document.createElement("meta");
+      ogTitle.setAttribute("property", "og:title");
+      document.head.appendChild(ogTitle);
     }
-    ogTitle.setAttribute('content', title);
-    
+    ogTitle.setAttribute("content", title);
+
     let ogUrl = document.querySelector('meta[property="og:url"]');
     if (!ogUrl) {
-        ogUrl = document.createElement('meta');
-        ogUrl.setAttribute('property', 'og:url');
-        document.head.appendChild(ogUrl);
+      ogUrl = document.createElement("meta");
+      ogUrl.setAttribute("property", "og:url");
+      document.head.appendChild(ogUrl);
     }
-    ogUrl.setAttribute('content', canonicalUrl);
-}
+    ogUrl.setAttribute("content", canonicalUrl);
+  }
 
-// ─── ADD STRUCTURED DATA (JSON-LD) ───────────────────────────────────────────
-function addStructuredData() {
+  // ─── ADD STRUCTURED DATA (JSON-LD) ───────────────────────────────────────────
+  function addStructuredData() {
     // Remove existing structured data
-    const existingScript = document.querySelector('script[type="application/ld+json"]');
+    const existingScript = document.querySelector(
+      'script[type="application/ld+json"]',
+    );
     if (existingScript) existingScript.remove();
-    
+
     const structuredData = {
-        "@context": "https://schema.org/",
-        "@type": "Product",
-        "name": safeProductData.productName,
-        "image": safeProductData.mainImage,
-        "description": safeProductData.aboutItem?.join(' ') || '',
-        "sku": safeProductData.currentSku,
-        "mpn": safeProductData.productStrId,
-        "brand": {
-            "@type": "Brand",
-            "name": safeProductData.brandName
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      name: safeProductData.productName,
+      image: safeProductData.mainImage,
+      description: safeProductData.aboutItem?.join(" ") || "",
+      sku: safeProductData.currentSku,
+      mpn: safeProductData.productStrId,
+      brand: {
+        "@type": "Brand",
+        name: safeProductData.brandName,
+      },
+      offers: {
+        "@type": "Offer",
+        url: window.location.href,
+        priceCurrency: "INR",
+        price: safeProductData.currentSellingPrice,
+        priceValidUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .split("T")[0],
+        availability:
+          safeProductData.currentStock > 0
+            ? "https://schema.org/InStock"
+            : "https://schema.org/OutOfStock",
+        seller: {
+          "@type": "Organization",
+          name: "Artezo",
         },
-        "offers": {
-            "@type": "Offer",
-            "url": window.location.href,
-            "priceCurrency": "INR",
-            "price": safeProductData.currentSellingPrice,
-            "priceValidUntil": new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-            "availability": safeProductData.currentStock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-            "seller": {
-                "@type": "Organization",
-                "name": "Artezo"
-            }
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.5",
-            "reviewCount": safeProductData.productReviews?.length || 50
-        }
+      },
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.5",
+        reviewCount: safeProductData.productReviews?.length || 50,
+      },
     };
-    
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
     script.textContent = JSON.stringify(structuredData);
     document.head.appendChild(script);
-}
-
+  }
 
   //====================================================//
   //          patch end
@@ -432,17 +452,16 @@ function addStructuredData() {
     />
   </div>
 
-  ${
-    banner.imgDescription
-      ? `
+  ${banner.imgDescription
+            ? `
       <div class="banner-desc">
         <p class="banner-text">
           ${banner.imgDescription}
         </p>
       </div>
       `
-      : ""
-  }
+            : ""
+          }
 
 </div>
       `;
@@ -481,11 +500,10 @@ function addStructuredData() {
           </h1>
 
           <p class="text-gray-600 font-lexend text-base md:text-lg leading-relaxed max-w-xl mx-auto">
-            ${
-              safeProductData.aboutItem?.[0] ||
-              safeProductData.description?.[0] ||
-              "Discover thoughtfully curated decor pieces that bring warmth and elegance into your space."
-            }
+            ${safeProductData.aboutItem?.[0] ||
+        safeProductData.description?.[0] ||
+        "Discover thoughtfully curated decor pieces that bring warmth and elegance into your space."
+        }
           </p>
 
         </div>
@@ -557,24 +575,22 @@ function addStructuredData() {
               <span class="text-3xl font-bold font-lexend text-[#1D3C4A]">
                 ₹${safeProductData.currentSellingPrice || 0}
               </span>
-              ${
-                safeProductData.currentMrpPrice &&
-                safeProductData.currentMrpPrice >
-                  (safeProductData.currentSellingPrice || 0)
-                  ? `
+              ${safeProductData.currentMrpPrice &&
+        safeProductData.currentMrpPrice >
+        (safeProductData.currentSellingPrice || 0)
+        ? `
               <span class="text-2xl text-gray-400 font-lexend line-through">
                 ₹${safeProductData.currentMrpPrice}
               </span>`
-                  : ""
-              }
-              ${
-                getDiscountPercent()
-                  ? `
+        : ""
+      }
+              ${getDiscountPercent()
+        ? `
               <span class="bg-[#e39f32] text-white font-bold px-4 py-1.5 rounded-2xl text-sm shadow-sm tracking-wide">
                 ${getDiscountPercent()}% OFF
               </span>`
-                  : ""
-              }
+        : ""
+      }
             </div>
           </div>
 
@@ -672,7 +688,8 @@ function addStructuredData() {
 
   </div>
 </div>
-<!-- Note Section -->
+
+<!-- Note Section - 1/6/26 -->
 <div class="bg-orange-50 border border-orange-200 rounded-lg p-3 flex gap-3">
   <i class="fas fa-exclamation-circle text-orange-600 mt-0.5"></i>
   <p class="text-xs text-gray-700 leading-relaxed">
@@ -1487,60 +1504,66 @@ function addStructuredData() {
 
     // Color buttons
     // Color buttons - REPLACE the existing click handler with this:
-document.getElementById("variantSection").addEventListener("click", (e) => {
-    const btn = e.target.closest(".color-variant");
-    if (!btn) return;
+    document.getElementById("variantSection").addEventListener("click", (e) => {
+      const btn = e.target.closest(".color-variant");
+      if (!btn) return;
 
-    document
+      document
         .querySelectorAll(".color-variant")
         .forEach((b) =>
-            b.classList.remove("ring-2", "ring-[#E6A62C]", "ring-offset-2"),
+          b.classList.remove("ring-2", "ring-[#E6A62C]", "ring-offset-2"),
         );
-    btn.classList.add("ring-2", "ring-[#E6A62C]", "ring-offset-2");
+      btn.classList.add("ring-2", "ring-[#E6A62C]", "ring-offset-2");
 
-    // Update main product info
-    document.getElementById("mainProductImage").src = btn.dataset.image;
-    document.querySelector(".price-display").textContent =
+      // Update main product info
+      document.getElementById("mainProductImage").src = btn.dataset.image;
+      document.querySelector(".price-display").textContent =
         `₹${parseInt(btn.dataset.price).toLocaleString()}`;
-    
-    // ─── ADD THIS BLOCK - Update currentVariant when color clicked ───
-    const variantId = btn.dataset.variantId;
-    const newVariant = safeProductData.availableVariants?.find(v => v.variantId === variantId);
-    if (newVariant) {
+
+      // ─── ADD THIS BLOCK - Update currentVariant when color clicked ───
+      const variantId = btn.dataset.variantId;
+      const newVariant = safeProductData.availableVariants?.find(
+        (v) => v.variantId === variantId,
+      );
+      if (newVariant) {
         currentVariant = newVariant;
         // URL will be updated via updateProductDisplay() call below
-    }
-    // ─────────────────────────────────────────────────────────────────
-});
+      }
+      // ─────────────────────────────────────────────────────────────────
+    });
 
-// Also update the size button click handler to find the first available color
-// for that size and update currentVariant:
-sizeButtons.forEach((btn) => {
-    btn.addEventListener("click", () => {
+    // Also update the size button click handler to find the first available color
+    // for that size and update currentVariant:
+    sizeButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
         sizeButtons.forEach((b) =>
-            b.classList.remove(
-                "border-[#E6A62C]",
-                "bg-[#fff9ef]",
-                "text-[#033E59]",
-            ),
+          b.classList.remove(
+            "border-[#E6A62C]",
+            "bg-[#fff9ef]",
+            "text-[#033E59]",
+          ),
         );
         btn.classList.add("border-[#E6A62C]", "bg-[#fff9ef]", "text-[#033E59]");
 
         filterColorsBySize(btn.dataset.size);
-        
+
         // ─── ADD THIS - Find first visible color and update currentVariant ───
-        const firstVisibleColor = document.querySelector('.color-variant[style*="display: block"], .color-variant:not([style*="display: none"])');
+        const firstVisibleColor = document.querySelector(
+          '.color-variant[style*="display: block"], .color-variant:not([style*="display: none"])',
+        );
         if (firstVisibleColor) {
-            const variantId = firstVisibleColor.dataset.variantId;
-            const newVariant = safeProductData.availableVariants?.find(v => v.variantId === variantId);
-            if (newVariant) {
-                currentVariant = newVariant;
-                rewriteURLToSEO(currentVariant.sku || currentVariant.variantId);
-            }
+          const variantId = firstVisibleColor.dataset.variantId;
+          const newVariant = safeProductData.availableVariants?.find(
+            (v) => v.variantId === variantId,
+          );
+          if (newVariant) {
+            currentVariant = newVariant;
+            rewriteURLToSEO(currentVariant.sku || currentVariant.variantId);
+          }
         }
         // ────────────────────────────────────────────────────────────────────
+      });
     });
-});
 
     // Initialize with first size
     if (sizeButtons.length > 0) {
@@ -1548,54 +1571,54 @@ sizeButtons.forEach((btn) => {
     }
   }
 
-//   function updateProductDisplay() {
-//     const mainImage = document.getElementById("mainProductImage");
-//     if (mainImage && currentVariant?.mainImage)
-//       mainImage.src = currentVariant.mainImage;
-//     const priceElement = document.querySelector(
-//       ".text-3xl.font-bold, .price-display",
-//     );
-//     const mrpElement = document.querySelector(".line-through");
-//     if (priceElement && currentVariant)
-//       priceElement.textContent = `₹${currentVariant.price}`;
-//     if (mrpElement && currentVariant)
-//       mrpElement.textContent = `₹${currentVariant.mrp}`;
-//     const stockInfo = document.getElementById("stockInfo");
-//     if (stockInfo && currentVariant)
-//       stockInfo.textContent = `Only ${currentVariant.stock} items left in stock`;
+  //   function updateProductDisplay() {
+  //     const mainImage = document.getElementById("mainProductImage");
+  //     if (mainImage && currentVariant?.mainImage)
+  //       mainImage.src = currentVariant.mainImage;
+  //     const priceElement = document.querySelector(
+  //       ".text-3xl.font-bold, .price-display",
+  //     );
+  //     const mrpElement = document.querySelector(".line-through");
+  //     if (priceElement && currentVariant)
+  //       priceElement.textContent = `₹${currentVariant.price}`;
+  //     if (mrpElement && currentVariant)
+  //       mrpElement.textContent = `₹${currentVariant.mrp}`;
+  //     const stockInfo = document.getElementById("stockInfo");
+  //     if (stockInfo && currentVariant)
+  //       stockInfo.textContent = `Only ${currentVariant.stock} items left in stock`;
 
-//     // Add at the end of updateProductDisplay() function
-// if (safeProductData && currentVariant) {
-//     const variantSku = currentVariant.sku || currentVariant.variantId || null;
-//     rewriteURLToSEO(variantSku);
-// }
-//   }
+  //     // Add at the end of updateProductDisplay() function
+  // if (safeProductData && currentVariant) {
+  //     const variantSku = currentVariant.sku || currentVariant.variantId || null;
+  //     rewriteURLToSEO(variantSku);
+  // }
+  //   }
 
-// Find this function in your current file and REPLACE with this:
+  // Find this function in your current file and REPLACE with this:
 
-function updateProductDisplay() {
+  function updateProductDisplay() {
     const mainImage = document.getElementById("mainProductImage");
     if (mainImage && currentVariant?.mainImage)
-        mainImage.src = currentVariant.mainImage;
+      mainImage.src = currentVariant.mainImage;
     const priceElement = document.querySelector(
-        ".text-3xl.font-bold, .price-display",
+      ".text-3xl.font-bold, .price-display",
     );
     const mrpElement = document.querySelector(".line-through");
     if (priceElement && currentVariant)
-        priceElement.textContent = `₹${currentVariant.price}`;
+      priceElement.textContent = `₹${currentVariant.price}`;
     if (mrpElement && currentVariant)
-        mrpElement.textContent = `₹${currentVariant.mrp}`;
+      mrpElement.textContent = `₹${currentVariant.mrp}`;
     const stockInfo = document.getElementById("stockInfo");
     if (stockInfo && currentVariant)
-        stockInfo.textContent = `Only ${currentVariant.stock} items left in stock`;
-    
+      stockInfo.textContent = `Only ${currentVariant.stock} items left in stock`;
+
     // ─── ADD THIS BLOCK - UPDATE URL WITH VARIANT SKU ───
     if (safeProductData && currentVariant) {
-        const variantSku = currentVariant.sku || currentVariant.variantId || null;
-        rewriteURLToSEO(variantSku);
+      const variantSku = currentVariant.sku || currentVariant.variantId || null;
+      rewriteURLToSEO(variantSku);
     }
     // ─────────────────────────────────────────────────
-}
+  }
 
   function applyCoupon(couponCode) {
     const coupon = safeProductData.availabeCoupons?.find(
@@ -1650,7 +1673,7 @@ function updateProductDisplay() {
         ((safeProductData.currentMrpPrice -
           safeProductData.currentSellingPrice) /
           (safeProductData.currentMrpPrice || 1)) *
-          100,
+        100,
       ) || 0;
 
     // Get similar products from the database
@@ -1806,64 +1829,77 @@ function updateProductDisplay() {
     let variantCardsHTML = `
       <div class="mt-6 space-y-8" id="variantSection">
 
-        <!-- SIZE SECTION -->
-        <div>
-          <div class="flex items-center gap-3 mb-3">
-            <span class="text-sm font-semibold text-[#033E59]">Size</span>
-            <div class="h-px bg-gray-200 flex-1"></div>
-          </div>
-          <div class="flex flex-wrap gap-3" id="sizeOptions">
-            ${uniqueSizes
-              .map(
-                (size, idx) => `
-              <button class="size-btn px-6 py-3 text-sm font-medium border-2 rounded-2xl transition-all duration-200
-                             ${idx === 0 ? "border-[#E6A62C] bg-[#fff9ef] text-[#033E59] shadow-sm" : "border-gray-200 hover:border-[#E6A62C]"}"
-                      data-size="${size}">
-                ${size}
-              </button>
-            `,
-              )
-              .join("")}
-          </div>
-        </div>
+       <!-- SIZE SECTION - 5th june changes -->
+<div>
+  <div class="flex items-center gap-2 mb-2">
+    <span class="text-sm font-semibold text-[#033E59]">Size</span>
+    <div class="h-px bg-gray-200 flex-1"></div>
+  </div>
 
-        <!-- COLOR SECTION -->
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-3">
-              <span class="text-sm font-semibold text-[#033E59]">Color</span>
-              <div class="h-px bg-gray-200 flex-1"></div>
+  <div class="flex flex-wrap gap-2" id="sizeOptions">
+    ${uniqueSizes
+      .map(
+        (size, idx) => `
+          <button class="size-btn px-4 py-2 text-xs font-medium border rounded-xl transition-all duration-200
+            ${
+              idx === 0
+                ? "border-[#E6A62C] bg-[#fff9ef] text-[#033E59] shadow-sm"
+                : "border-gray-200 hover:border-[#E6A62C]"
+            }"
+            data-size="${size}">
+            ${size}
+          </button>
+        `
+      )
+      .join("")}
+  </div>
+</div>
+
+       <!-- COLOR SECTION - 5th june changes -->
+<div>
+  <div class="flex items-center justify-between mb-2">
+    <div class="flex items-center gap-2 flex-1">
+      <span class="text-sm font-semibold text-[#033E59]">Color</span>
+      <div class="h-px bg-gray-200 flex-1"></div>
+    </div>
+    <span id="sizeHint" class="text-xs text-gray-500 font-medium"></span>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5" id="colorSwatches">
+    ${transformedData.colors
+      .map(
+        (c) => `
+          <button class="color-variant group bg-white rounded-xl border border-gray-200 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+                  data-variant-id="${c.variantId}"
+                  data-sku="${c.sku || ""}"
+                  data-price="${c.price}"
+                  data-mrp="${c.mrp}"
+                  data-stock="${c.stock}"
+                  data-image="${c.image}"
+                  data-sizes="${(c.sizes || [c.size || "Standard"]).join(",")}">
+
+            <div class="aspect-[1/0.9] rounded-lg overflow-hidden mb-1.5">
+              <img src="${c.image}"
+                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                   alt="${c.name}">
             </div>
-            <span id="sizeHint" class="text-xs text-gray-500 font-medium"></span>
-          </div>
 
-          <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 p-2 gap-4" id="colorSwatches">
-            ${transformedData.colors
-              .map(
-                (c) => `
-              <button class="color-variant group bg-white rounded-2xl border border-gray-200 p-2 transition-all hover:shadow-md hover:-translate-y-1"
-                      data-variant-id="${c.variantId}"
-                      data-sku="${c.sku || ""}"
-                      data-price="${c.price}"
-                      data-mrp="${c.mrp}"
-                      data-stock="${c.stock}"
-                      data-image="${c.image}"
-                      data-sizes="${(c.sizes || [c.size || "Standard"]).join(",")}">
-                <div class="aspect-square rounded-xl overflow-hidden mb-3">
-                  <img src="${c.image}" 
-                       class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                       alt="${c.name}">
-                </div>
-                <div class="text-center">
-                  <div class="text-sm font-medium text-[#033E59]">${c.name}</div>
-                  <div class="text-base font-semibold text-[#E6A62C] mt-1">₹${c.price}</div>
-                </div>
-              </button>
-            `,
-              )
-              .join("")}
-          </div>
-        </div>
+            <div class="text-center">
+              <div class="text-xs font-medium text-[#033E59] leading-tight">
+                ${c.name}
+              </div>
+
+              <div class="text-xs font-semibold text-[#E6A62C] mt-0.5">
+                ₹${c.price}
+              </div>
+            </div>
+
+          </button>
+        `
+      )
+      .join("")}
+  </div>
+</div>
       </div>
     `;
 
@@ -1913,16 +1949,16 @@ function updateProductDisplay() {
     <div class="flex gap-2">
   <div class="flex flex-col gap-2 w-12" id="thumbContainer">
     ${transformedData.mainImages
-      .map(
-        (img, idx) => `
+        .map(
+          (img, idx) => `
       <img src="${img.thumb}" data-full="${img.full}" class="thumbnail-img w-full h-16 object-cover rounded-md ${idx === 0 ? "active" : ""} cursor-pointer" />
     `,
-      )
-      .join("")}
+        )
+        .join("")}
   </div>
-  <div class="relative flex-1 bg-white rounded-xl border border-stone-100 shadow-sm flex items-center justify-center p-2 h-[320px]">
-    <!-- Main Product Image -->
-    <img id="mainProductImage" src="${transformedData.mainImages[0]?.full || transformedData.mainImages[0]?.thumb}" alt="Product" class="max-h-full max-w-full object-contain" />
+  <div class="relative flex-1 bg-white rounded-xl border border-stone-100 shadow-sm flex items-center justify-center">
+    <!-- Main Product Image - 5th june changes  -->
+    <img id="mainProductImage" src="${transformedData.mainImages[0]?.full || transformedData.mainImages[0]?.thumb}" alt="Product" class="max-h-full max-w-full object-cover"/>
     
     <!-- Discount Badge -->
     <span class="absolute top-2 left-2 text-white text-[10px] font-semibold px-2.5 py-1 rounded-full shadow" style="background: #e6a62c">${transformedData.discountPercent}% OFF</span>
@@ -1932,7 +1968,7 @@ function updateProductDisplay() {
 </div>
 
         <div class="md:col-span-7">
-          <div class="overflow-y-auto max-h-[calc(100vh-5rem)] pr-2 space-y-3 hide-scrollbar">
+          <div class="pr-2 space-y-3"> <!--5th june changes - removed sticky scroll functionlality -->
             <h1 class="text-xl md:text-2xl font-normal font-zain leading-tight text-[#033E59]">${transformedData.name}</h1>
             
                           <div class="flex items-start justify-between gap-3 mb-2">
@@ -1974,15 +2010,23 @@ function updateProductDisplay() {
 
             <!-- Deal of the day -->
             <div class="max-w-[520px] p-2.5 rounded-2xl bg-gradient-to-br from-[#e39f32]/5 to-[#1D3C4A]/5 border border-[#e5e7eb] relative space-y-2 overflow-hidden">
-              <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#e39f32]/10 to-[#1D3C4A]/10 rounded-bl-full"></div>
-              <div class="absolute bottom-0 left-0 w-14 h-14 bg-gradient-to-tr from-[#e39f32]/10 to-[#1D3C4A]/10 rounded-tr-full"></div>
+                <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#e39f32]/10 to-[#1D3C4A]/10 rounded-bl-full"></div>
+                <div class="absolute bottom-0 left-0 w-14 h-14 bg-gradient-to-tr from-[#e39f32]/10 to-[#1D3C4A]/10 rounded-tr-full"></div>
               
-              <div class="relative z-10 bg-white/85 backdrop-blur rounded-xl border border-[#e5e7eb] px-2.5 py-2 flex items-center justify-between gap-2.5">
+                <div class="relative z-10 bg-white/85 backdrop-blur rounded-xl border border-[#e5e7eb] px-2.5 py-2 flex items-center justify-between gap-2.5">
                 <div class="flex items-center gap-2">
                   <div class="flex items-end gap-1">
                     <span class="text-xl md:text-2xl font-bold text-[#1D3C4A] price-display">₹${transformedData.price.toLocaleString()}</span>
                     <span class="text-xs text-[#e39f32] line-through">₹${transformedData.originalPrice.toLocaleString()}</span>
                     <span class="bg-[#e39f32] text-white text-[8px] px-1.5 py-[2px] rounded-full">${transformedData.discountPercent}% OFF</span>
+                   
+                    <!-- Tax info badge - 5th june changes -->
+                    <div class="mt-1 inline-flex items-center gap-1.5 w-fit px-2 py-0.5 rounded-full bg-[#e39f32]/10 border border-[#e39f32]/20">
+                        <i class="fa-solid fa-shield-check text-[9px] text-[#e39f32]"></i>
+                              <span class="text-[10px] font-medium text-[#1D3C4A]/80">
+                                Inclusive of all taxes
+                              </span>
+                    </div>
                   </div>
                 </div>
                 <div class="hidden md:block w-px h-7 bg-[#e5e7eb]"></div>
@@ -2037,32 +2081,35 @@ function updateProductDisplay() {
             <!-- Variant Cards -->
             ${variantCardsHTML}
            
-            <!-- Purchase Quantity Section -->
-           <div class="mt-6 bg-white p-4 rounded-xl border border-[#e5e7eb] shadow-sm space-y-3">
+            <!-- Purchase Quantity Section - 5th june changes -->
+           <div class="mt-5 bg-white p-3 rounded-xl border border-[#e5e7eb] shadow-sm space-y-2.5">
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+  <!-- Purchase Actions -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
 
     <!-- Quantity Selector -->
-    <div class="flex items-center justify-between border border-[#e5e7eb] rounded-lg overflow-hidden">
+    <div class="flex items-center justify-between border border-[#e5e7eb] rounded-lg overflow-hidden h-10">
+
       <button id="decreaseBtn"
-        class="px-4 py-2 text-lg hover:bg-stone-50 w-1/3 border-r border-[#e5e7eb]">
+        class="w-1/3 h-full flex items-center justify-center text-base hover:bg-stone-50 border-r border-[#e5e7eb] transition">
         −
       </button>
 
       <span id="quantity"
-        class="text-sm text-center w-1/3 border-r border-[#e5e7eb] py-2">
+        class="w-1/3 h-full flex items-center justify-center text-sm font-medium border-r border-[#e5e7eb]">
         1
       </span>
 
       <button id="increaseBtn"
-        class="px-4 py-2 text-lg hover:bg-stone-50 w-1/3">
+        class="w-1/3 h-full flex items-center justify-center text-base hover:bg-stone-50 transition">
         +
       </button>
+
     </div>
 
     <!-- Add To Cart -->
     <button
-      class="add-to-cart-btn flex items-center justify-center gap-2 border border-[#e5e7eb] rounded-lg bg-white text-[#1D3C4A] font-medium px-4 py-2 hover:bg-[#e39f32] hover:text-white transition">
+      class="add-to-cart-btn h-10 flex items-center justify-center gap-1.5 border border-[#e5e7eb] rounded-lg bg-white text-[#1D3C4A] font-medium px-3 hover:bg-[#e39f32] hover:text-white transition">
 
       ${addToCartButtonIcon}
 
@@ -2072,11 +2119,11 @@ function updateProductDisplay() {
 
     </button>
 
-    <!-- Buy Now / Customize -->
+    <!-- Buy Now -->
     <button
-      class="buy-now-btn flex items-center justify-center gap-2 bg-[#1D3C4A] text-white rounded-lg font-medium px-4 py-2 hover:bg-[#e39f32] transition">
+      class="buy-now-btn h-10 flex items-center justify-center gap-1.5 bg-[#1D3C4A] text-white rounded-lg font-medium px-3 hover:bg-[#e39f32] transition">
 
-      <i class="fa-solid fa-bolt"></i>
+      <i class="fa-solid fa-arrow-right text-xs"></i>
 
       <span class="text-sm whitespace-nowrap">
         ${safeProductData.isCustomizable ? "Customize & Buy" : "Buy Now"}
@@ -2086,35 +2133,33 @@ function updateProductDisplay() {
 
   </div>
 
-  <!-- Stock + Bulk Order Note -->
-  <div class="flex flex-wrap items-center gap-2 text-xs">
+  <!-- Stock + WhatsApp -->
+  <div class="flex flex-wrap items-center gap-2 text-[11px]">
 
-  <!-- Stock Info -->
-  <p id="stockInfo" class="text-green-600 font-semibold">
-    Only ${transformedData.stock} items left in stock
-  </p>
+    <p id="stockInfo" class="text-green-600 font-medium">
+      Only ${transformedData.stock} items left
+    </p>
 
-  ${
-    safeProductData.isCustomizable
+    ${safeProductData.isCustomizable
       ? `
-      <span class="text-gray-300">|</span>
+      <span class="hidden sm:inline text-gray-300">•</span>
 
       <a href="https://wa.me/919876543210"
          target="_blank"
-         class="flex items-center gap-1.5 bg-green-50 border border-green-500 text-green-700 px-2.5 py-1 rounded-md font-medium hover:bg-green-100 transition">
+         class="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-green-50 border border-green-200 text-green-700 font-medium hover:bg-green-100 transition">
 
-        <i class="fa-brands fa-whatsapp text-green-600 text-sm"></i>
+        <i class="fa-brands fa-whatsapp text-xs"></i>
 
-       <span class="whitespace-nowrap" title="Click to chat with us on WhatsApp">
-  Need bulk quantities? Chat with us on WhatsApp
-</span>
+        <span class="whitespace-nowrap">
+          Need bulk quantities?
+        </span>
 
       </a>
       `
       : ""
-  }
+    }
 
-</div>
+  </div>
 
 </div>
 
@@ -2154,8 +2199,8 @@ function updateProductDisplay() {
 </div>
             </div>
 
-            <!-- Additional Information Accordion -->
-            <section class="max-w-3xl mx-auto px-4 pt-8 pb-0 font-sans text-[#1D3C4A]">
+            <!-- Additional Information Accordion - 5th June Changes -->
+           <section class="max-w-4xl mx-auto pt-8 pb-0 font-sans text-[#1D3C4A]">
               <div class="border border-[#e5e7eb] rounded-xl divide-y divide-[#e5e7eb] bg-white" id="accordionContainer"></div>
             </section>
 
@@ -2175,14 +2220,14 @@ function updateProductDisplay() {
     // This will populate the hero section with product banners
     fillHeroBanner();
   }
-  // ==================== FILL ACCORDION ====================
+  // ==================== FILL ACCORDION - 5th June Changes ====================
 
   function fillAccordion() {
     const acc = document.getElementById("accordionContainer");
     if (!acc) return;
 
     let accHtml = `
-      <div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-4 text-left font-medium font-lexend text-[#1D3C4A]">Highlights<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm"><div class="rounded-lg overflow-hidden bg-white border border-[#edf2f4] shadow-sm"><table class="w-full text-left border-collapse"><tbody>`;
+      <div class="item"><button class="toggle w-full flex justify-between items-center px-4 py-2 text-left font-medium font-lexend text-[#1D3C4A]">Highlights<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm"><div class="rounded-lg overflow-hidden bg-white border border-[#edf2f4] shadow-sm"><table class="w-full text-left border-collapse"><tbody>`;
 
     transformedData.highlights.forEach((h) => {
       let rowClass = h.accent
@@ -2195,22 +2240,22 @@ function updateProductDisplay() {
     });
 
     accHtml += `</tbody><\/table><\/div><\/div><\/div><\/div>`;
-    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-3 text-left font-medium font-lexend">Product Description<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm text-[#1D3C4A]/80 leading-relaxed space-y-4">${transformedData.description}<\/div><\/div><\/div>`;
-    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-3 text-left font-medium font-lexend text-[#1D3C4A]">Specifications<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm"><div class="rounded-lg overflow-hidden bg-white border border-[#edf2f4] shadow-sm"><table class="w-full text-left border-collapse"><tbody>`;
+    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-4 py-2 text-left font-medium font-lexend">Product Description<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm text-[#1D3C4A]/80 leading-relaxed space-y-4">${transformedData.description}<\/div><\/div><\/div>`;
+    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-4 py-2 text-left font-medium font-lexend text-[#1D3C4A]">Specifications<span class="icon text-xl transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm"><div class="rounded-lg overflow-hidden bg-white border border-[#edf2f4] shadow-sm"><table class="w-full text-left border-collapse"><tbody>`;
 
     transformedData.specifications.forEach((s) => {
       accHtml += `<tr class="border-b border-[#f1f5f7]"><td class="py-3 px-3 font-medium border-r border-[#f1f5f7] w-1/3 text-[#1D3C4A]">${s.label}<\/td><td class="py-3 px-4 text-[#1D3C4A]/70">${s.value}<\/td><\/tr>`;
     });
 
     accHtml += `</tbody><\/table><\/div><\/div><\/div><\/div>`;
-    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-3 text-left font-medium font-lexend text-[#1D3C4A]">Additional Information<span class="icon text-lg transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-5 text-sm"><div class="grid gap-3">`;
+    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-4 py-2 text-left font-medium font-lexend text-[#1D3C4A]">Additional Information<span class="icon text-lg transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-5 text-sm"><div class="grid gap-3">`;
 
     transformedData.additionalInfo.forEach((info) => {
       accHtml += `<div class="flex items-start gap-2 p-3 rounded-md bg-[#f8fbfc] border border-[#eef3f6]"><div class="w-1.5 h-1.5 mt-2 rounded-full bg-[#e39f32]"></div><p class="text-[#1D3C4A]/75 text-[13px]">${info}</p></div>`;
     });
 
     accHtml += `</div></div></div></div>`;
-    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-6 py-3 text-left font-medium font-lexend text-[#1D3C4A]">FAQs<span class="icon text-lg transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm space-y-4">`;
+    accHtml += `<div class="item"><button class="toggle w-full flex justify-between items-center px-4 py-2 text-left font-medium font-lexend text-[#1D3C4A]">FAQs<span class="icon text-lg transition-transform duration-300">+</span></button><div class="content"><div class="px-6 pb-6 text-sm space-y-4">`;
 
     transformedData.faqs.forEach((faq) => {
       accHtml += `<div class="p-4 rounded-lg border border-[#eef3f6] bg-white shadow-sm"><p class="font-medium text-[#1D3C4A] text-[14px]">${faq.q}</p><p class="mt-2 text-[#1D3C4A]/70 text-[13px] leading-relaxed">${faq.a}</p></div>`;
@@ -2762,7 +2807,8 @@ bg-gray-100 px-2 py-0.5 rounded-md">
 
       setTimeout(() => {
         setupDynamicVariants(); //#patch 3 - Setup variant selection logic after HTML is rendered
-        const initialVariantSku = safeProductData.availableVariants?.[0]?.sku || null;
+        const initialVariantSku =
+          safeProductData.availableVariants?.[0]?.sku || null;
         rewriteURLToSEO(initialVariantSku);
 
         document

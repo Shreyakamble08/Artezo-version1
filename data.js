@@ -367,7 +367,7 @@ window.artezoData = {
       discount: "40"
     },
     {
-      image: "https://static-assets-prod.fnp.com/images/pr/l/v20240911124119/timeless-glow-led-lamp_1.jpg",
+      image: "/Images/frame.jpg",
       title: "Personalized Acrylic LED Photo Frame",
       category: "Photo Frames",
       price: "₹799",
