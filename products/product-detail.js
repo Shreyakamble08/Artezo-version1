@@ -452,16 +452,17 @@
     />
   </div>
 
-  ${banner.imgDescription
-            ? `
+  ${
+    banner.imgDescription
+      ? `
       <div class="banner-desc">
         <p class="banner-text">
           ${banner.imgDescription}
         </p>
       </div>
       `
-            : ""
-          }
+      : ""
+  }
 
 </div>
       `;
@@ -500,10 +501,11 @@
           </h1>
 
           <p class="text-gray-600 font-lexend text-base md:text-lg leading-relaxed max-w-xl mx-auto">
-            ${safeProductData.aboutItem?.[0] ||
-        safeProductData.description?.[0] ||
-        "Discover thoughtfully curated decor pieces that bring warmth and elegance into your space."
-        }
+            ${
+              safeProductData.aboutItem?.[0] ||
+              safeProductData.description?.[0] ||
+              "Discover thoughtfully curated decor pieces that bring warmth and elegance into your space."
+            }
           </p>
 
         </div>
@@ -560,54 +562,74 @@
   function buildCustomizationOverlay() {
     if (document.getElementById("customizationOverlay")) return;
 
+
+// Note:customization overlay mobile fixes
+
     const overlayHTML = `
   <div id="customizationOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden opacity-0 transition-all duration-300 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl transform transition-all duration-300 scale-95 border border-[#e5e7eb]">
-
+<div class="bg-white rounded-2xl w-full max-w-4xl h-[95vh] overflow-hidden shadow-2xl transform transition-all duration-300 scale-95 border border-[#e5e7eb] flex flex-col">      <!-- HEADER -->
       <!-- HEADER -->
-      <div class="sticky top-0 bg-gradient-to-b from-[#fff7d6] via-[#fffdf5] to-white border-b border-[#e5e7eb] px-6 py-6 z-10 rounded-t-2xl shadow-sm">
-        <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
-          <div class="flex-1">
-            <h2 class="text-2xl font-semibold font-zain text-[#1D3C4A] leading-tight mb-4">
-              ${safeProductData.productName || safeProductData.name || "Product"}
-            </h2>
-            <div class="flex items-center flex-wrap gap-4">
-              <span class="text-3xl font-bold font-lexend text-[#1D3C4A]">
-                ₹${safeProductData.currentSellingPrice || 0}
-              </span>
-              ${safeProductData.currentMrpPrice &&
-        safeProductData.currentMrpPrice >
-        (safeProductData.currentSellingPrice || 0)
-        ? `
-              <span class="text-2xl text-gray-400 font-lexend line-through">
-                ₹${safeProductData.currentMrpPrice}
-              </span>`
-        : ""
-      }
-              ${getDiscountPercent()
-        ? `
-              <span class="bg-[#e39f32] text-white font-bold px-4 py-1.5 rounded-2xl text-sm shadow-sm tracking-wide">
-                ${getDiscountPercent()}% OFF
-              </span>`
-        : ""
-      }
-            </div>
-          </div>
+<div class="sticky top-0 bg-gradient-to-b from-[#fff7d6] via-[#fffdf5] to-white border-b border-[#e5e7eb] px-3 sm:px-4 py-3 z-10 rounded-t-2xl shadow-sm">
 
-          <button id="closeCustomOverlayBtn" 
-                  class="text-gray-400 hover:text-[#1D3C4A] hover:bg-gray-100 p-3 rounded-2xl transition-all flex-shrink-0 self-start">
-            <i class="fas fa-times text-3xl"></i>
-          </button>
-        </div>
+  <div class="flex items-start justify-between gap-3">
+
+    <!-- Product Info -->
+    <div class="flex-1 min-w-0">
+
+      <h2 class="text-lg sm:text-xl font-semibold font-zain text-[#1D3C4A] leading-tight break-words mb-2">
+        ${safeProductData.productName || safeProductData.name || "Product"}
+      </h2>
+
+      <div class="flex flex-wrap items-center gap-2">
+
+        <span class="text-xl sm:text-2xl font-bold font-lexend text-[#1D3C4A]">
+          ₹${safeProductData.currentSellingPrice || 0}
+        </span>
+
+        ${
+          safeProductData.currentMrpPrice &&
+          safeProductData.currentMrpPrice >
+            (safeProductData.currentSellingPrice || 0)
+            ? `
+        <span class="text-sm sm:text-base text-gray-400 font-lexend line-through">
+          ₹${safeProductData.currentMrpPrice}
+        </span>
+        `
+            : ""
+        }
+
+        ${
+          getDiscountPercent()
+            ? `
+        <span class="bg-[#e39f32] text-white text-xs font-semibold px-2 py-1 rounded-md">
+          ${getDiscountPercent()}% OFF
+        </span>
+        `
+            : ""
+        }
+
       </div>
 
+    </div>
+
+    <!-- Close Button -->
+    <button
+      id="closeCustomOverlayBtn"
+      class="flex-shrink-0 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-[#1D3C4A] hover:bg-gray-100 rounded-lg transition-all">
+      <i class="fas fa-times text-lg"></i>
+    </button>
+
+  </div>
+</div>
+      
+
       <!-- BODY -->
-      <div class="p-6">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-8">
 
           <!-- LEFT SIDE - Preview + Summary -->
           <div class="space-y-4">
-            <div class="bg-gray-100 rounded-xl overflow-hidden aspect-square border border-[#e5e7eb]">
+      <div class="bg-gray-100 rounded-xl overflow-hidden aspect-square border border-[#e5e7eb] max-w-md mx-auto lg:max-w-none">
               <img id="customPreviewImage"
                    src="${safeProductData.mainImage}"
                    alt="Product preview"
@@ -637,19 +659,18 @@
 
             <!-- Custom Fields Container (Upload + other fields) -->
             <div id="customFieldsContainer" 
-                 class="space-y-5 max-h-[52vh] overflow-y-auto pr-2 custom-scrollbar">
+                 class="space-y-5 max-h-[45vh] lg:max-h-[52vh] overflow-y-auto pr-1 sm:pr-2 custom-scrollbar">
             </div>
 
             <!-- WhatsApp Number Section -->
       <div class="bg-white border border-[#e5e7eb] rounded-xl p-5 shadow-sm">
 
-        <div class="flex items-start gap-4">
+       <div class="flex items-start gap-3">
 
           <!-- WhatsApp Icon -->
-          <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-            <i class="fab fa-whatsapp text-2xl text-green-600"></i>
-          </div>
-
+         <div class="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+  <i class="fab fa-whatsapp text-xl sm:text-2xl text-green-600"></i>
+</div>
           <div class="flex-1">
 
             <h4 class="font-semibold text-gray-900">
@@ -679,10 +700,10 @@
 
             </div>
 
-      <!-- Helper Text -->
-      <p class="text-xs text-gray-400 mt-2">
-        Our designer will send the customized design preview to this number before final processing.
-      </p>
+              <!-- Helper Text -->
+            <p class="text-xs text-gray-400 mt-2">
+              Our designer will send the customized design preview to this number before final processing.
+            </p>
 
     </div>
 
@@ -703,22 +724,26 @@
       </div>
 
       <!-- FOOTER -->
-      <div class="sticky bottom-0 bg-white border-t border-[#e5e7eb] px-6 py-4 flex justify-end gap-3">
-        <button id="cancelCustomBtn"
-          class="px-6 py-2.5 border border-[#e5e7eb] rounded-lg hover:bg-gray-50 transition font-medium text-[#1D3C4A]">
-          Cancel
-        </button>
-        <button id="addCustomizedToCartBtn"
-          class="px-6 py-2.5 bg-[#1D3C4A] text-white rounded-lg hover:opacity-90 transition font-medium flex items-center gap-2">
-          <i class="fas fa-cart-plus"></i>
-          Add to Cart
-        </button>
-        <button id="buyCustomizedNowBtn"
-          class="px-6 py-2.5 bg-[#e39f32] text-white rounded-lg hover:opacity-90 transition font-medium flex items-center gap-2">
-          <i class="fas fa-bolt"></i>
-          Buy Now
-        </button>
-      </div>
+     <div class="sticky bottom-0 bg-white border-t border-[#e5e7eb] px-3 sm:px-5 py-3 flex flex-col sm:flex-row justify-end gap-2">
+  
+  <button id="cancelCustomBtn"
+    class="w-full sm:w-auto px-4 py-2 border border-[#e5e7eb] rounded-lg hover:bg-gray-50 transition text-sm font-medium text-[#1D3C4A]">
+    Cancel
+  </button>
+
+  <button id="addCustomizedToCartBtn"
+    class="w-full sm:w-auto px-4 py-2 bg-[#1D3C4A] text-white rounded-lg hover:opacity-90 transition text-sm font-medium flex items-center justify-center gap-1.5">
+    <i class="fas fa-cart-plus text-xs"></i>
+    Add to Cart
+  </button>
+
+  <button id="buyCustomizedNowBtn"
+    class="w-full sm:w-auto px-4 py-2 bg-[#e39f32] text-white rounded-lg hover:opacity-90 transition text-sm font-medium flex items-center justify-center gap-1.5">
+    <i class="fas fa-arrow-right text-xs"></i>
+    Buy Now
+  </button>
+
+</div>
 
     </div>
   </div>
@@ -1673,7 +1698,7 @@
         ((safeProductData.currentMrpPrice -
           safeProductData.currentSellingPrice) /
           (safeProductData.currentMrpPrice || 1)) *
-        100,
+          100,
       ) || 0;
 
     // Get similar products from the database
@@ -1849,7 +1874,7 @@
             data-size="${size}">
             ${size}
           </button>
-        `
+        `,
       )
       .join("")}
   </div>
@@ -1895,7 +1920,7 @@
             </div>
 
           </button>
-        `
+        `,
       )
       .join("")}
   </div>
@@ -1949,12 +1974,12 @@
     <div class="flex gap-2">
   <div class="flex flex-col gap-2 w-12" id="thumbContainer">
     ${transformedData.mainImages
-        .map(
-          (img, idx) => `
+      .map(
+        (img, idx) => `
       <img src="${img.thumb}" data-full="${img.full}" class="thumbnail-img w-full h-16 object-cover rounded-md ${idx === 0 ? "active" : ""} cursor-pointer" />
     `,
-        )
-        .join("")}
+      )
+      .join("")}
   </div>
   <div class="relative flex-1 bg-white rounded-xl border border-stone-100 shadow-sm flex items-center justify-center">
     <!-- Main Product Image - 5th june changes  -->
@@ -2140,8 +2165,9 @@
       Only ${transformedData.stock} items left
     </p>
 
-    ${safeProductData.isCustomizable
-      ? `
+    ${
+      safeProductData.isCustomizable
+        ? `
       <span class="hidden sm:inline text-gray-300">•</span>
 
       <a href="https://wa.me/919876543210"
@@ -2156,7 +2182,7 @@
 
       </a>
       `
-      : ""
+        : ""
     }
 
   </div>
