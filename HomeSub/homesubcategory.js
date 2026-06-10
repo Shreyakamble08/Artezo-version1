@@ -246,56 +246,132 @@
     if (document.getElementById("customizationOverlay")) return;
 
     const overlayHTML = `
-      <div id="customizationOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden opacity-0 transition-all duration-300 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-5xl w-full max-h-[90vh] overflow-y-auto shadow-2xl transform transition-all duration-300 scale-95">
-          <div class="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center z-10 rounded-t-2xl">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-                <i class="fas fa-sliders-h text-purple-600"></i>
-              </div>
-              <div>
-                <h2 class="text-xl font-semibold text-gray-900">Customize Your Product</h2>
-                <p class="text-sm text-gray-500">Make it uniquely yours</p>
-              </div>
-            </div>
-            <button onclick="window.closeCustomizationOverlay && closeCustomizationOverlay()" class="text-gray-400 hover:text-gray-600 transition">
-              <i class="fas fa-times text-2xl"></i>
-            </button>
+     <div id="customizationOverlay"
+     class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden opacity-0 transition-all duration-300 flex items-center justify-center p-3 sm:p-4">
+
+  <div class="bg-white rounded-2xl w-full max-w-5xl h-[95vh] overflow-hidden shadow-2xl border border-[#e5e7eb] flex flex-col">
+
+    <!-- HEADER -->
+    <div class="sticky top-0 bg-gradient-to-b from-[#fff7d6] via-[#fffdf5] to-white border-b border-[#e5e7eb] px-4 sm:px-5 py-3 z-10 rounded-t-2xl shadow-sm">
+
+      <div class="flex items-start justify-between gap-3">
+
+        <div class="flex items-center gap-3 flex-1 min-w-0">
+
+          <div class="w-10 h-10 bg-[#1D3C4A]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <i class="fas fa-sliders-h text-[#1D3C4A]"></i>
           </div>
-          
-          <div class="p-6">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div class="space-y-4">
-                <div class="bg-gray-100 rounded-xl overflow-hidden aspect-square">
-                  <img id="customPreviewImage" src="" alt="Product preview" class="w-full h-full object-cover">
-                </div>
-                <div class="bg-gray-50 rounded-xl p-4">
-                  <h3 class="font-medium text-gray-900 mb-2">Your Customization</h3>
-                  <div id="customSummary" class="text-sm text-gray-600 space-y-1 max-h-40 overflow-y-auto"></div>
-                  <div class="mt-3 pt-3 border-t border-gray-200">
-                    <div class="flex justify-between items-center">
-                      <span class="font-semibold text-gray-700">Total Price:</span>
-                      <span id="customTotalPrice" class="text-2xl font-bold text-purple-600">₹0</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div id="customOptionsContainer" class="space-y-5 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar"></div>
-            </div>
+
+          <div class="min-w-0">
+            <h2 class="text-lg sm:text-xl font-semibold text-[#1D3C4A] truncate">
+              Customize Your Product
+            </h2>
+            <p class="text-xs sm:text-sm text-gray-500">
+              Make it uniquely yours
+            </p>
           </div>
-          
-          <div class="sticky bottom-0 bg-white border-t border-gray-200 px-6 py-4 flex justify-end gap-3">
-            <button onclick="window.closeCustomizationOverlay && closeCustomizationOverlay()" class="px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-medium">Cancel</button>
-            <button id="addCustomizedToCartBtn" onclick="window.addCustomizedToCart && addCustomizedToCart()" class="px-6 py-2.5 bg-[#1D3C4A] text-white rounded-lg hover:bg-[#16323d] transition font-medium flex items-center gap-2">
-              <i class="fas fa-cart-plus"></i> Add to Cart
-            </button>
-            <button id="buyCustomizedNowBtn" onclick="window.buyCustomizedNow && buyCustomizedNow()" class="px-6 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition font-medium flex items-center gap-2">
-              <i class="fas fa-bolt"></i> Buy Now
-            </button>
-          </div>
+
         </div>
+
+        <button
+          onclick="window.closeCustomizationOverlay && closeCustomizationOverlay()"
+          class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-[#1D3C4A] hover:bg-gray-100 transition">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+
       </div>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="flex-1 min-h-0 overflow-y-auto p-4 sm:p-6">
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-8">
+
+        <!-- LEFT SIDE -->
+        <div class="space-y-4">
+
+          <div class="bg-gray-100 rounded-xl overflow-hidden aspect-square border border-[#e5e7eb] max-w-md mx-auto lg:max-w-none">
+            <img
+              id="customPreviewImage"
+              src=""
+              alt="Product preview"
+              class="w-full h-full object-cover">
+          </div>
+
+          <div class="bg-gray-50 rounded-xl p-4 border border-[#e5e7eb]">
+
+            <h3 class="font-semibold text-[#1D3C4A] mb-2">
+              Customization Summary
+            </h3>
+
+            <div
+              id="customSummary"
+              class="text-sm text-gray-600 space-y-1 max-h-40 overflow-y-auto">
+            </div>
+
+            <div class="mt-3 pt-3 border-t border-[#e5e7eb]">
+
+              <div class="flex justify-between items-center">
+
+                <span class="font-semibold text-gray-700">
+                  Total Price
+                </span>
+
+                <span
+                  id="customTotalPrice"
+                  class="text-xl sm:text-2xl font-bold text-[#e39f32]">
+                  ₹0
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div
+          id="customOptionsContainer"
+          class="space-y-5 max-h-[45vh] lg:max-h-[60vh] overflow-y-auto pr-1 sm:pr-2 custom-scrollbar">
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="sticky bottom-0 bg-white border-t border-[#e5e7eb] px-3 sm:px-5 py-3 flex flex-col sm:flex-row justify-end gap-2">
+
+      <button
+        onclick="window.closeCustomizationOverlay && closeCustomizationOverlay()"
+        class="w-full sm:w-auto px-4 py-2 border border-[#e5e7eb] rounded-lg hover:bg-gray-50 transition text-sm font-medium text-[#1D3C4A]">
+        Cancel
+      </button>
+
+      <button
+        id="addCustomizedToCartBtn"
+        onclick="window.addCustomizedToCart && addCustomizedToCart()"
+        class="w-full sm:w-auto px-4 py-2 bg-[#1D3C4A] text-white rounded-lg hover:opacity-90 transition text-sm font-medium flex items-center justify-center gap-1.5">
+        <i class="fas fa-cart-plus text-xs"></i>
+        Add to Cart
+      </button>
+
+      <button
+        id="buyCustomizedNowBtn"
+        onclick="window.buyCustomizedNow && buyCustomizedNow()"
+        class="w-full sm:w-auto px-4 py-2 bg-[#e39f32] text-white rounded-lg hover:opacity-90 transition text-sm font-medium flex items-center justify-center gap-1.5">
+        <i class="fas fa-bolt text-xs"></i>
+        Buy Now
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
     `;
 
     document.body.insertAdjacentHTML("beforeend", overlayHTML);

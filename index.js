@@ -71,17 +71,17 @@
                 <p class="text-gray-500 mt-2 font-lexend text-sm">Curated collections for every space</p>
               </div>
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[140px] -mt-6">
-                ${data.categories
-        .map(
-          (cat) => `
+                              ${data.categories
+                      .map(
+                        (cat) => `
                   <a href="${cat.link}" class="relative ${cat.spanClass} rounded-xl overflow-hidden group">
                     <img src="${cat.image}" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" />
                     <div class="absolute inset-x-0 bottom-0 ${cat.gradientHeight} bg-gradient-to-t from-black to-transparent"></div>
                     <h3 class="absolute bottom-${cat.bottomOffset} left-4 text-white font-lexend ${cat.fontSize} font-semibold">${cat.name}</h3>
                   </a>
                 `,
-        )
-        .join("")}
+                  )
+                  .join("")}
               </div>
             </div>
           </section>

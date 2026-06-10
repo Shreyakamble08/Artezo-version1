@@ -32,14 +32,14 @@ window.artezoData = {
 
   // Categories Data
   categories: [
-    { name: "Bedding", image: "./Images/bed.jfif", link: "#", spanClass: "col-span-2 row-span-2", gradientHeight: "h-32", bottomOffset: "6", fontSize: "text-xl" },
-    { name: "Sofas", image: "./Images/banner1.jpg", link: "#", spanClass: "col-span-2", gradientHeight: "h-24", bottomOffset: "4", fontSize: "font-medium" },
-    { name: "Chairs", image: "./Images/chair3.jfif", link: "#", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
-    { name: "Lighting", image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c", link: "#", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
-    { name: "Dining", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c", link: "#", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
-    { name: "Storage", image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7", link: "#", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
-    { name: "Wall Decor", image: "https://images.unsplash.com/photo-1501045661006-fcebe0257c3f", link: "#", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
-    { name: "Curtains", image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36", link: "#", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" }
+    { name: "Wall Decor", image: "./Images/walldecor.jpg", link: "/HomeCategory/homecategory.html", spanClass: "col-span-2 row-span-2", gradientHeight: "h-32", bottomOffset: "6", fontSize: "text-xl" },
+    { name: "Photo Frames", image: "./Images/photoframe.jfif", link: "/HomeCategory/homecategory.html", spanClass: "col-span-2", gradientHeight: "h-24", bottomOffset: "4", fontSize: "font-medium" },
+    { name: "Home Decor", image: "./Images/homedecor.webp", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
+    { name: "Name Plates", image: "./Images/nameplate.png", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
+    { name: "Corporate Gifts", image: "./Images/corporategift.jpg", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
+    { name: "Personalized Gifts", image: "./Images/personalisegift.jpg", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
+    { name: "Trophies", image: "./Images/trophies.jfif", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
+    { name: "Trends", image: "./Images/trending.png", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" }
   ],
 
   // Discover Section Data
