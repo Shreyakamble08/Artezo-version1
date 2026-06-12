@@ -32,12 +32,12 @@ window.artezoData = {
 
   // Categories Data
   categories: [
-    { name: "Wall Decor", image: "./Images/walldecor.jpg", link: "/HomeCategory/homecategory.html", spanClass: "col-span-2 row-span-2", gradientHeight: "h-32", bottomOffset: "6", fontSize: "text-xl" },
+    { name: "Wall Decor", image: "./Images/wall.png", link: "/HomeCategory/homecategory.html", spanClass: "col-span-2 row-span-2", gradientHeight: "h-32", bottomOffset: "6", fontSize: "text-xl" },
     { name: "Photo Frames", image: "./Images/photoframe.jfif", link: "/HomeCategory/homecategory.html", spanClass: "col-span-2", gradientHeight: "h-24", bottomOffset: "4", fontSize: "font-medium" },
-    { name: "Home Decor", image: "./Images/homedecor.webp", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
-    { name: "Name Plates", image: "./Images/nameplate.png", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
+    { name: "Home Decor", image: "./Images/homedecor.jpg", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
+    { name: "Name Plates", image: "./Images/nameplate.jpg", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
     { name: "Corporate Gifts", image: "./Images/corporategift.jpg", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
-    { name: "Personalized Gifts", image: "./Images/personalisegift.jpg", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
+    { name: "Personalized Gifts", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR34k2HzsipbtIL08zvqWf696ljf4JPUZgF5w&s", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
     { name: "Trophies", image: "./Images/trophies.jfif", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" },
     { name: "Trends", image: "./Images/trending.png", link: "/HomeCategory/homecategory.html", spanClass: "", gradientHeight: "h-20", bottomOffset: "4", fontSize: "font-medium" }
   ],
