@@ -37,7 +37,7 @@ window.artezoData = {
     {
       name: "Wall Decor",
       image: "./Images/wall.png",
-      link: "/HomeCategory/homecategory.html",
+      link: "/HomeCategory/homecategory.html?category=wall%20decor",
       spanClass: "col-span-2 row-span-2",
       gradientHeight: "h-32",
       bottomOffset: "6",
@@ -46,7 +46,7 @@ window.artezoData = {
     {
       name: "Photo Frames",
       image: "./Images/photoframe.jfif",
-      link: "/HomeCategory/homecategory.html",
+      link: "/HomeCategory/homecategory.html?category=photo%20frames",
       spanClass: "col-span-2",
       gradientHeight: "h-24",
       bottomOffset: "4",
@@ -55,7 +55,7 @@ window.artezoData = {
     {
       name: "Home Decor",
       image: "./Images/homedecor.jpg",
-      link: "/HomeCategory/homecategory.html",
+      link: "/HomeCategory/homecategory.html?category=home%20decor",
       spanClass: "",
       gradientHeight: "h-20",
       bottomOffset: "4",
@@ -64,7 +64,7 @@ window.artezoData = {
     {
       name: "Name Plates",
       image: "./Images/nameplate.jpg",
-      link: "/HomeCategory/homecategory.html",
+      link: "/HomeCategory/homecategory.html?category=name%20plates",
       spanClass: "",
       gradientHeight: "h-20",
       bottomOffset: "4",
@@ -73,7 +73,7 @@ window.artezoData = {
     {
       name: "Corporate Gifts",
       image: "./Images/corporategift.jpg",
-      link: "/HomeCategory/homecategory.html",
+      link: "/HomeCategory/homecategory.html?category=corporate%20gifts",
       spanClass: "",
       gradientHeight: "h-20",
       bottomOffset: "4",
@@ -83,7 +83,7 @@ window.artezoData = {
       name: "Personalized Gifts",
       image:
         "./Images/personalized.png",
-      link: "/HomeCategory/homecategory.html",
+      link: "/HomeCategory/homecategory.html?category=personalized%20gifts",
       spanClass: "",
       gradientHeight: "h-20",
       bottomOffset: "4",
@@ -92,7 +92,7 @@ window.artezoData = {
     {
       name: "Trophies",
       image: "./Images/trophies.jfif",
-      link: "/HomeCategory/homecategory.html",
+      link: "/HomeCategory/homecategory.html?category=trophies",
       spanClass: "",
       gradientHeight: "h-20",
       bottomOffset: "4",
@@ -101,7 +101,7 @@ window.artezoData = {
     {
       name: "Trends",
       image: "./Images/trending.png",
-      link: "/HomeCategory/homecategory.html",
+      link: "/HomeCategory/homecategory.html?category=trends",
       spanClass: "",
       gradientHeight: "h-20",
       bottomOffset: "4",

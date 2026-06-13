@@ -562,8 +562,7 @@
   function buildCustomizationOverlay() {
     if (document.getElementById("customizationOverlay")) return;
 
-
-// Note:customization overlay mobile fixes
+    // Note:customization overlay mobile fixes
 
     const overlayHTML = `
   <div id="customizationOverlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden opacity-0 transition-all duration-300 flex items-center justify-center p-4">
@@ -1512,21 +1511,32 @@
     }
 
     // Size buttons
-    sizeButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        sizeButtons.forEach((b) =>
-          b.classList.remove(
-            "border-[#E6A62C]",
-            "bg-[#fff9ef]",
-            "text-[#033E59]",
-          ),
-        );
-        btn.classList.add("border-[#E6A62C]", "bg-[#fff9ef]", "text-[#033E59]");
+   sizeButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
 
-        filterColorsBySize(btn.dataset.size);
-      });
+    sizeButtons.forEach((b) => {
+      b.classList.remove(
+        "border-[#E6A62C]",
+        "bg-[#fff9ef]",
+        "text-[#033E59]",
+        "shadow-sm"
+      );
+
+      b.classList.add("border-gray-200");
     });
 
+    btn.classList.remove("border-gray-200");
+
+    btn.classList.add(
+      "border-[#E6A62C]",
+      "bg-[#fff9ef]",
+      "text-[#033E59]",
+      "shadow-sm"
+    );
+
+    filterColorsBySize(btn.dataset.size);
+  });
+});
     // Color buttons
     // Color buttons - REPLACE the existing click handler with this:
     document.getElementById("variantSection").addEventListener("click", (e) => {
